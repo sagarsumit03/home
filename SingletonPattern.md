@@ -18,7 +18,7 @@ All implementations of the Singleton have these two steps in common:
 * Create a static creation method that acts as a constructor. Under the hood, this method calls the private constructor to create an object and saves it in a static field. All following calls to this method return the cached object.
 
 ### Code Example:
-    ```
+
     public class Singleton {
 
         private static Singleton instance;
@@ -32,7 +32,6 @@ All implementations of the Singleton have these two steps in common:
             return instance;
         }
     }
-    ```
 
 1. The problem here is that the Singleton can still be broken by reflection, cloning or Serializing.
     ```
@@ -62,7 +61,7 @@ Here we created a new instance of singleton class by using reflection, but that 
 we are able to access private constructor.
 Solution:
 We can throw execption, if the constructor is called in any way:
-    ```
+    
     public class Singleton {
 
         private static Singleton instance;
@@ -82,20 +81,23 @@ We can throw execption, if the constructor is called in any way:
             return instance;
         }
     }
-   ```
-
+    
+    
 2. To fix Singleton pattern for Serialization, we should just use additional method readResolve(). This will return 
     the same instance as before.
-    ```
-    protected Object readResolve() {
-    return getInstance();
-    }
-    ```
+    
+    
+        protected Object readResolve() {
+            return getInstance();
+        }
+    
+    
 3. To Fix new Instance getting created using Cloning, we can use the clone() method, to throw the `CloneNotSupportedException`
-   ```
+    ```
     @Override
     protected Object clone() throws CloneNotSupportedException  
     { 
         throw new CloneNotSupportedException(); 
     } 
+    
     ```
