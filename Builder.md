@@ -40,6 +40,7 @@ public class EmployeeBuilder{
 
 ```
 And this is how you return a new Employee 
+
 ```
 public Employee getEmployee2() {  
         return new EmployeeBuilder()  
@@ -48,4 +49,4 @@ public Employee getEmployee2() {
                 .buildEmployee();  
     }  
 
-``
+```
