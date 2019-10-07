@@ -1,2 +1,2 @@
 # Design_Patterns
-[__PageA__](FactoryPattern.md)
+[__Factory Pattern__](FactoryPattern.md)
