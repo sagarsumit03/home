@@ -42,6 +42,9 @@ https://badia-kharroubi.gitbooks.io/microservices-architecture
 	##### Implementation:
 
 	>Hystrix' implementation of the bulkhead pattern limits the number of concurrent calls to a component and would have saved the application in this case. Assume we have 30 request handling threads and there is a limit of 10 concurrent calls to C. Then at most 10 request handling threads can hang when calling C, the other 20 threads can still handle requests and use components A and B.
+	> @HystrixCommand(fallbackMethod="getFallbackMethod", threadPoolKey="threadPool", threadPoolProperties={
+		@HystrixProperty(name="coreSize", value="20"), @HystrixProperty(name="maxQueueSize", value="10")})
+	coreSize is the number of thread pool given for that resource and maxQueueSize is the queue of requests maintained for that resource like 10 requests will be in queue waiting for their allocation
 
   
 ---
