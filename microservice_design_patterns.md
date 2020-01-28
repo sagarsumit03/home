@@ -26,7 +26,9 @@ https://badia-kharroubi.gitbooks.io/microservices-architecture
 		Transform, Coexist, and Eliminate
 
 	while converting from Monolith to Microservice, instead of taking out all the components at once, we replace a particular functionality with a new service. They co-exist for a while and once the new service is tested in Parellel, the old functionality is deleted from the Monolith.
+	
 ---
+
 * ### **BulkHead Pattern:**
 
 	Bulkhead pattern is to avoid faults in one part of a system to take the entire system down.
