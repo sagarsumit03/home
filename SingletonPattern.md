@@ -81,10 +81,31 @@ We can throw execption, if the constructor is called in any way:
             return instance;
         }
     }
-    ```
-    Since enums are inherently serializable, we don't need to implement it with a serializable interface. The reflection problem is also
-    not there. Therefore, it is 100% guaranteed that only one instance of the singleton is present within a JVM. Thus, this method is
-    recommended as the best method of making singletons in Java.
+    
+Since enums are inherently serializable, we don't need to implement it with a serializable interface. The reflection problem is also
+not there. Therefore, it is 100% guaranteed that only one instance of the singleton is present within a JVM. Thus, this method is
+recommended as the best method of making singletons in Java.
+
+    public enum SingletonEnum {
+        INSTANCE;
+        int value;
+        public int getValue() {
+            return value;
+        }
+        public void setValue(int value) {
+            this.value = value;
+        }
+    }
+    
+    public class EnumDemo {
+        public static void main(String[] args) {
+            SingletonEnum singleton = SingletonEnum.INSTANCE;
+            System.out.println(singleton.getValue());
+            singleton.setValue(2);
+            System.out.println(singleton.getValue());
+        }
+    }
+
 2. To fix Singleton pattern for Serialization, we should just use additional method readResolve(). This will return 
     the same instance as before.
     
