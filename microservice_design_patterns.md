@@ -133,7 +133,7 @@ A regular try/catch block, on the other hand, will always call the recommendatio
 	Suppose you have an e-commerce system powered by a bunch of microservices like Authorization, Product catalog, and Billing. Now imagine a customer’s checkout process fails, how would you go about determining the cause? You could check the logs of each microservice and eventually find the one with issues. However, this does not scale past a few services.
 The more practical approach is to gather the logs from each microservice in a central searchable database. That way when something breaks, you have the complete story easily, hence decreasing your Mean Time To Repair (MTTR).
 
-	##### Example: ```SumoLogic```
+	##### Example: ```SumoLogic```, ```LogStash```
 
 	##### Pros: ```Overwhelming size of Logs```
 
