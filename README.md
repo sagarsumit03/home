@@ -1,4 +1,4 @@
-# Design_Patterns
+# Design Patterns
 [__Factory Pattern__](FactoryPattern.md)  
 [__Builder Pattern__](Builder.md)  
 [__Singleton Pattern__](SingletonPattern.md)  
