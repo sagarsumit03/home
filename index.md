@@ -1,5 +1,4 @@
-# Welcome!
-
+<div style="font-color:#fc6767">Welcome!</div>
 ## Design Patterns:
 
 [__Factory Pattern__](FactoryPattern.md)  
