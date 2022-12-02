@@ -1,8 +1,11 @@
 ## Design Patterns:
-        <div style="font-size: 1vw">[__Factory Pattern__](design patterns/FactoryPattern.md) </div>
-        <div style="font-size: 1vw">  [__Builder Pattern__](design patterns/Builder.md) </div>
-         <div style="font-size: 1vw"> [__Singleton Pattern__](design patterns/SingletonPattern.md)</div>
-         <div style="font-size: 1vw"> [__Microservices Designpattern__](design patterns/microservice_design_patterns.md)</div>
-         
+
+    <div style="font-size: 1vw"><a href="./design patterns/FactoryPattern.md>Factory Pattern </div>
+    <div style="font-size: 1vw"><a href="./design patterns/Builder.md>Builder Pattern</div>
+    <div style="font-size: 1vw"><a href="./design patterns/SingletonPattern.md>Singleton Pattern </div>
+    <div style="font-size: 1vw"><a href="./design patterns/microservice_design_patterns.md>Microservices Designpattern</div>
+
+
 ## AWS
-      <div style="font-size: 1vw">[__AWS__](AWS/aws.md) </div>
+
+    <div style="font-size: 1vw"><a href="./AWS/aws.md> AWS </div>
