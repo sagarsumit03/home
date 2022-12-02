@@ -70,3 +70,11 @@ img {
   background-color: #0b2361;
   border-radius: 5px;
 }
+
+.text {
+    position: relative;
+    padding: 2vw;
+    width: 10vw;
+    text-align: center;
+    font-size: 2vw;
+  }
