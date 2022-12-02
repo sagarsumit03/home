@@ -1,7 +1,7 @@
 <div style="color:#fc6767">Welcome!</div>
 ## Design Patterns:
 
-[__Factory Pattern__](FactoryPattern.md)  
-[__Builder Pattern__](Builder.md)  
-[__Singleton Pattern__](SingletonPattern.md)  
-[__Microservices Design pattern__](microservice_design_patterns.md) 
+[Factory Pattern](design patterns/FactoryPattern.md)
+[Builder Pattern](design patterns/Builder.md)
+[Singleton Pattern](design patterns/SingletonPattern.md)
+[Microservices Design pattern](design patterns/microservice_design_patterns.md)
