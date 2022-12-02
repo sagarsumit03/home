@@ -9,6 +9,3 @@
       <div style="font-size: 1vw">
           [__AWS__](AWS/aws.md) 
       </div>
-    </div>
-  </body>
-</html>
