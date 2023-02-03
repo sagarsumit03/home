@@ -1,6 +1,6 @@
 Design Patterns: 
 
-   [__Factory Pattern__] (design patterns/FactoryPattern.md)  
+   [__Factory Pattern__](design patterns/FactoryPattern.md)  
     
    [__Builder Pattern__](design patterns/Builder.md)  
     
@@ -8,7 +8,7 @@ Design Patterns:
     
    [__Microservices Designpattern__](design patterns/microservice_design_patterns.md)  
    
-   [__Strategy Pattern__] (design patterns/Strategy Pattern.md)  
+   [__Strategy Pattern__](design patterns/Strategy Pattern.md)  
       
       
 AWS
