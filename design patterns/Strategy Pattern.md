@@ -1,6 +1,61 @@
-# Stretegy Design Pattern:
+# Strategy Design Pattern:
 
-> The strategy design pattern is operational design pattern.
+> The strategy design pattern is behavioral design pattern. 
+
+## It is used to switch between family of algorithms. 
+
+1. This pattern contains one abstract strategy interface and many concrete strategy implementations (algorithms) of that interface.
+
+2. The application uses strategy interface only. Depending on some configuration parameter, the concrete strategy will be tagged to interface.
+
+
+A Simple example is to Encrypt a file. Based off the size we can choose the `STRATEGY`:
+	
+-- For small files, you can use "in memory" strategy, where the complete file is read and kept in memory ( let's say for files < 1 gb )
+
+-- For large files, you can use another strategy, where parts of the file are read in memory and partial encrypted results are stored in tmp files.
+	
+
+```
+ File file = getFile();
+ Cipher c = CipherFactory.getCipher( file.size() );
+ c.performAction();
+
+
+
+// implementations:
+interface  Cipher  {
+     public void performAction();
+}
+
+class InMemoryCipherStrategy implements Cipher { 
+	 public void performAction() {
+	     // load in byte[] ....
+	 }
+}
+
+class SwaptToDiskCipher implements Cipher { 
+	 public void performAction() {
+	     // swapt partial results to file.
+	 }
+
+}
+```
+
+here: `Cipher c = CipherFactory.getCipher( file.size() );` is responsible to return the correct strategy instance for the cipher.
+To not confuse strategy with Factory being used we can replace `CipherFactory` with below:
+
+```
+Cipher C =null;
+if (file.size() <= 2048) {
+	C = new InMemoryCipherStrategy();
+}else{  
+	c= SwaptToDiskCipher ();
+}
+
+```
+---
+A more complex example would be Paying with Different Gateway at check-out. Similar example would be to choose/create different types of Coffee or Burger. Where we choose different `Algorithm` (example: if a user wants a Cheese Burger or a Chicken Burger, The Chef can just replace the patty and keep the rest as is)
 
 ```
 public interface PaymentStrategy {
