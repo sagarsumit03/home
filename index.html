@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <style>
+        h1 {
+            color: #111;
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 10vw;
+            font-weight: bold;
+            letter-spacing: -.5vw;
+            line-height: 1;
+            text-align: center;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+
+        .zoom {
+            padding: 5vw;
+            transition: transform .2s;
+            /* Animation */
+            margin: 0 auto;
+            text-align: center;
+            height: auto;
+            width: 30vw;
+            color: #111;
+            font-size: 3vw;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .zoom:hover {
+            transform: scale(1.3);
+            width: 45vw;
+            /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Home</h1>
+    <A href="design_pattern.html">
+        <div class="zoom post-header">Design Patterns</div>
+    </A>
+    <A href="docker-kubernates.html">
+        <div class="zoom post-header">Docker-Kubernates</div>
+    </A>
+</body>
+
+</html>
