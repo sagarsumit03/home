@@ -26,7 +26,7 @@ Its like a complex object creation. and furthermore if you want to add extra fea
 
 To avoid this we use Builder pattern:
 Example:
-```
+``` java
 House house = house
           .buildWalls()
           .buildWindows()
@@ -41,7 +41,7 @@ The pattern organizes object construction into a set of steps (buildWalls, build
 
 ### Application:
 to Avoid Telescope Constructors:
-```
+```java
 class Pizza {
     Pizza(int size) { ... }
     Pizza(int size, boolean cheese) { ... }
@@ -59,39 +59,57 @@ Useful when some or all paramaters are optional.
 Structure of the Builder Pattern
 Firstly, you need to define a base class with all args constructor. Then, you have to create a Builder class with attributes and setters for each argument of the base class. Each setter should return the builder. Then, need to create a build() methid that will construct and return object of base class.
 
-```
-public class Employee{
+```java
+public class Employee {
     private String name;
-    private String address;
-    
-    //getters
+    private String phoneNo;
+    private int age;
+    ...
+    //getters and setters
+
+    private Employee(EmployeeBuilder builder){
+        this.name = builder.name;
+        this.phoneNo = builder.phoneNo;
+        ...
+    }
 }
 
 ```
-```
-public class EmployeeBuilder{
+```java
+public static class EmployeeBuilder{
     private String name;
-    private String address;
-    
-    //setters which returns the Builder Only:
-    public EmployeeBuilder(string name){
-          this.name =name;
-          return this;
+    private String phoneNo;
+    private int age ;
+
+    public EmployeeBuilder name(String name) {
+        this.name = name;
+        return this;
     }
-    //constructor which calls the Employee Constructor:
-    public EmployeeBuilder(){
-          new Employee(name, address);
+    public EmployeeBuilder age(int age) {
+        this.age = age;
+        return this;
+    }
+    public EmployeeBuilder phoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+        return this;
+    }
+
+    public buildEmployee(){
+          new Employee(this);
     }
 }
 
 ```
 And this is how you return a new Employee 
 
-```
-public Employee getEmployee2() {  
-        return new EmployeeBuilder()  
-                .setEmployeeId("4321")  
-                .setAddress("Jeff")    
+```java
+public static void main(String args[]){
+
+    public Employee getEmployee() {  
+          return new EmployeeBuilder()  
+                .age("43")  
+                .name("Jeff")
+                .phoneNo("9963930163")
                 .buildEmployee();  
     }  
 
