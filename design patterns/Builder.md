@@ -10,7 +10,7 @@ There is build() method which returns a fully contstructed object (based on all 
 
 #### JAVA EXAMPLE:
 -------------
-`StringBuilder.append();`
+`StringBuilder.append();`{:.java}
 
 -------------
 
@@ -20,8 +20,8 @@ Its like a complex object creation. and furthermore if you want to add extra fea
 
 1. one way to solve this is to create a `house` Superclass and can have multiple subclasses with features like:  `houseWithGarden` or  `houseWithGarage` etc. But this would be complicated for each new requirement you would have to create a new SubClass.
 2. The second approach is to have as many parameters in the `house` constructor as you can example:
-      `public House(windows, door, lawn....)` but the constructor call would be ugly:
-      `new House(4,3,5, null, null, null....)`
+      `public House(windows, door, lawn....)`{:.java} but the constructor call would be ugly:
+      `new House(4,3,5, null, null, null....)`{:.java}
 
 
 To avoid this we use Builder pattern:
