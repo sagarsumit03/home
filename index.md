@@ -9,6 +9,9 @@ Design Patterns:
    [__Microservices Designpattern__](design patterns/microservice_design_patterns.md)  
    
    [__Strategy Pattern__](design patterns/Strategy Pattern.md)  
+
+   [__Decorator Pattern__](design patterns/DecoratorPattern.md)  
+
       
       
 AWS
