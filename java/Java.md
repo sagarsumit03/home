@@ -245,33 +245,21 @@ Heap is divided into sections which allows easy allocation and cleanup. Eden Spa
     }
     ```
     
-
----
-
 ## Heap vs Stack
 
 Each Java virtual machine thread has a private Java virtual machine stack, created at the same time as the thread.
 **local variables and methods are on the Java stack**.
-**Object is created in HEAP and the reference is in the stack.**
+**All Objects are created in HEAP and the reference is in the stack.**
 It Causes StackOverflow Error.
 
+**String pool is created in now ( java 8 ) heap memory instead of permgen. to store string literals: `String s = "abc"`**
+
+**STRING POOL Doesn't have String Literals**
+
+String pools are hash table containing the reference to the String object residing in heap in this case `"abc"` 
+
 The Java virtual machine has a heap that is shared among all Java virtual machine threads. The heap is the runtime data area from which **memory for all class instances and arrays is allocated**
-the memory leaks will be in the heap. It Causes OutOfMemoryError.
-
-*We can use -Xms and -Xmx JVM option to define the startup size and maximum size of heap memory. We can use -Xss to define the stack memory size.*
-
-```java
-public class Heap {
-    static List<String> list = new ArrayList<String>();
-
-public static void main(String args[]) throws Exception
-    {
-        Integer[] array = new Integer[10000 * 10000];
-    }
-}
-```
-
-the above program will throw an `OutOfMemoryError`. but Not anymore due to PermGem is replace with Native memory.
+The memory leaks will be in the heap. It Causes OutOfMemoryError. 
 
 ---
 
@@ -291,6 +279,144 @@ the above program will throw an `OutOfMemoryError`. but Not anymore due to PermG
 4. Native method interface is an interface that connects JVM with the native method libraries for executing native methods.
 
 ## Object Orientation Design
+
+### SOLID:
+
+ 1. **Single Responsibility Principle**: 
+ A class should have one reason to change. 
+	 ```java
+	 public class Invoice{
+            public void AddInvoice(){ 
+            ...
+            }
+            public void DeleteInvoice(){ 
+            ...
+            }
+		    public void GenerateReport(){ 
+            //this function should be moved to different class
+            }
+            public void EmailReport() { 
+            //this function should be moved to different class
+            }
+	}
+	``` 
+ 3. **Open Closed Principle**: 
+ _Entities should be open for extension, but closed for modification._
+ you can create classes and extend them (by creating a subclass), but you shouldnt  modify the original class. Like adding a new field is fine, but not modifying existing fields. 
+ 
+ 4. **Liskov Substitution Principle:** 
+ A class that expects an object of type animal should work if a subclass dog and a subclass cat are passed. Also Animal should not have a bark function. As cats cant bark.
+			 **Bad example**--
+
+	```java
+	public class Bird{
+	    public void fly(){}
+	}
+	public class Duck extends Bird{}
+     ```
+     The duck can fly because it is a bird, but what about this:
+	```java
+	public class Ostrich extends Bird{}
+	```
+	Ostrich is a bird, but it can't fly, Ostrich class is a subtype of class Bird, but it shouldn't be able to use the fly method, that means we are breaking the LSP principle.
+**Good example**
+
+	```java
+	public class Bird{}
+	public class FlyingBirds extends Bird{
+	    public void fly(){}
+	}
+	public class Duck extends FlyingBirds{}
+	public class Ostrich extends Bird{} 
+	```
+ 5. **Interface Separation**: 
+ An **interface** shouldn't **force** a **class** to implement methods that it won't be using.
+ Keep your interfaces the smallest you can. A teacher that also is a student should implement both the IStudent and ITeacher interfaces, instead of a single big interface called IStudentAndTeacher.
+ 
+ 6. **Dependency Inversion (NOT dependency Injection)** :  
+Imagine you have a car and your different components are:
+	```java
+		1.  Client: You as the person driving the car.
+		2.  High-Level Modules: The steering wheel and the gas/brake peddles.
+		3.  Low-Level Modules: Engine
+	``` 
+	**Abstractions don't depend on details.**
+	For me, it doesn't matter whether my engine has changed or not, I still should be able to drive my car the same way.
+	**Details should depend upon abstractions.**
+	I would not want an engine that causes the brake to double the speed. Meaning a engine should do what it says drive the car.
+	```java
+		interface DatabaseInterface {
+		    public function get();
+		    public function insert();
+		    public function update();
+		    public function delete();
+		}
+		class MySQLDatabase implements DatabaseInterface {
+		    //all implemented functions get(), insert() ....
+		    }
+		}
+
+		class MongoDB implements DatabaseInterface {
+		     //all implemented functions get(), insert() ....
+		}
+
+		class BudgetReport {
+		    private DatabaseInterface database;
+
+		    public BudgetReport(DatabaseInterface database)
+		    {
+		        this.database = database;
+		    }
+
+		    public function open(){
+		        this.database.get();
+		    }
+
+		    public function save(){
+		        this.database.insert();
+		    }
+		    ...
+		}
+
+		// Main Function: Client
+		DatabaseInterface mysql = new MySQLDatabase();
+		report_mysql = new BudgetReport(mysql);
+
+		report_mysql.open();
+
+		DatabaseInterface mongo = new MongoDB();
+		report_mongo = new BudgetReport(mongo);
+
+		report_mongo.open();
+	```
+	Now here BudgetReport doesnt care about the underlying implementation whether its mySQL or MongoDB.  This also works with Open-Close Principle, as we can add a new database class that implements the `DatabaseInterface` and we dont need to change BudgetReport class.
+
+	Another Example: 
+
+	```java
+	interface Logger {
+	   public void write(String message);
+	}
+	 
+	class FileLogger implements Logger {
+	   public void write(String message) {
+	       // write to file
+	   }
+	}
+	 
+	class StandardOutLogger implements Logger {
+	   public void write(String message) {
+	       // write to standard out
+	   }
+	}
+	 
+	public void doStuff(Logger logger) {
+	   // do stuff
+	   logger.write("some message")
+	}
+
+	```
+	If you’re writing code that needs a logger, you don’t want to limit yourself to writing to files, because you don’t care. You just call the  `write`  method and let the concrete class sort it out.
 
 ### Abstraction
 
@@ -760,8 +886,11 @@ for(Entry<String, String> entry : listOfEntries){
     sortedByValue.put(entry.getKey(), entry.getValue());
 }
 ```
+### Fail Fast Iterator:
 
->Fail Fast Iterator: Means any structural modification made to ArrayList like `adding or removing elements` during Iteration will throw java.util.ConcurrentModificationException.
+- Enhanced for loop is fail fast.
+
+- Fail Fast Iterator: Means any structural modification made to ArrayList like `adding or removing elements` during Iteration will throw java.util.ConcurrentModificationException.
 ```java
 Iterator<String> iterator=arrayList.iterator();
 while(iterator.hasNext()){
@@ -981,5 +1110,18 @@ public static void main(String[] args) throws NoSuchFieldException, SecurityExce
 This can’t be broken. 
 
 Even with Serialization we can break immutability if someone has access to the byte stream they can alter the bytes and they break immutability.
+
+
+### Differences between Interface and Abstract class:
+
+|  Interface | Abstract Class |
+|--|--|
+| Interfaces dont extend classes | Abstract classes extends one or more Interfaces  |
+|Interfaces dont have constructors | Classes have constructors |
+| All functions in interfaces need to be implemented by the subclasses | Only Abstract functions needs to be implemented. |
+|Interfaces dont have synchronized functions. | Instance menthods in Abstract class can be synchronized. But **Abstract Functions are not synchronized.** |
+|All the variables in Interface are public, [static](http://www.javamadesoeasy.com/2015/05/static-keyword-in-java-variable-method.html) and [final](http://www.javamadesoeasy.com/2015/05/final-keyword-in-java-20-salient.html) by default. Interface variables are also known as constants. | Abstract class can have private, instance variables as well.
+
+
 
 [JAVA 8](https://www.notion.so/JAVA-8-3c7b3b54902f481da4b6d484734db240?pvs=21)
