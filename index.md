@@ -14,7 +14,7 @@ Design Patterns:
 
 JAVA:
 
-   - [_Basic JAVA_](java/java.md)
+   - [__Basic Java__](java/Java.md)
       
 AWS
     [__AWS__](AWS/aws.md)
