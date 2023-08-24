@@ -286,18 +286,18 @@ The memory leaks will be in the heap. It Causes OutOfMemoryError.
  A class should have one reason to change. 
 	 ```java
 	 public class Invoice{
-            public void AddInvoice(){ 
-            ...
-            }
-            public void DeleteInvoice(){ 
-            ...
-            }
-		    public void GenerateReport(){ 
-            //this function should be moved to different class
-            }
-            public void EmailReport() { 
-            //this function should be moved to different class
-            }
+	     public void AddInvoice(){ 
+	         ...
+	     }
+	     public void DeleteInvoice(){ 
+	         ...
+	     }
+	     public void GenerateReport(){ 
+	         //this function should be moved to different class
+	    }
+	    public void EmailReport() { 
+	         //this function should be moved to different class
+	    }
 	}
 	``` 
  3. **Open Closed Principle**: 
