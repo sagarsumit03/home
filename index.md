@@ -16,6 +16,13 @@ JAVA:
 
    - [__Basic Java__](java/Java.md)
       
-AWS
+AWS:
     [__AWS__](AWS/aws.md)
+
+Threads:
+   - [Blocking Queue](threads/blockingqueue.md)
+   - [Reentrant Lock](threads/reentrantlock.md)
+   - [Semaphores](threads/semaphore.md)
+   - [Volatile vs Atomic](threads/volatilevsatomic.md)
+
 
