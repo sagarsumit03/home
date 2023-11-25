@@ -1,4 +1,5 @@
 
+
 # Java
 
 **Java is a Compiled + Interpreted Language. First the Code is compiled into bytecode resulting in .class file. After this the code is interpreted/executed at runtime**
@@ -50,75 +51,125 @@ Strings and Files got a couple new methods:
 "Marco ".strip();
 ```
 
-13:
+Java 17:  
+### ‘record’ Type
+record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs). Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
 
-Switch Statement: Switch expressions can now return a value. And you can use a lambda-style syntax for your expressions, without the fall-through/break issues.
+	public class Fruit {
+	    private String name;
+	    private int price;
 
-Old switch statements looked like this:
-
-```java
-switch(status) { 
-	case SUBSCRIBER: 
-			// code block 
-			break; 
-	case FREE_TRIAL:
-			// code block 
-			break;
-	default:
-			// code block
+	    //getters, setters, equals and hashcode methods
 	}
-```
+	
+Although we can reduce most of our boilerplate code by using libraries like lombok, we can still reduce it even further with the help of records. With records the same code becomes:
 
-Whereas with Java 13, switch statements can look like this:
+	public static void doSomething() {
+	  record Fruit(String name, int price) {}
+	  Fruit fruit = new Fruit("Apple", 100);
+	  System.out.println(fruit.getPrice());
+	}
+	
+As we can see, we can even define method local record objects. The records object automatically provides us with getter, setter, equals and hashcode methods for all its fields.
 
-```java
-boolean result = switch (status) {
-	case SUBSCRIBER -> true;
-	case FREE_TRIAL -> false; 
-	default -> throw new IllegalArgumentException("something is murky!");
-}
-```
+The fields inside the record cannot be changed, and it can only be defined by the arguments given when declaring the record as shown above(but we can define static variables). We can also define a custom constructor which can validate the fields. It is recommended that we do not override the getters and setters of records which could affects its immutability. An example of a record with multiple constructors and static variables and methods is shown below:
 
-AND:
-Multiline Strings (Preview). You can finally do this in Java:
+	public record Employee(int id, String firstName,
+	        String lastName) {
+	
+	    static int empToken;
+	
+	    // Compact Constructor
+	    public Employee {
+	        if (id < 100) {
+	            throw new IllegalArgumentException(
+	                    "Employee Id cannot be below 100.");
+	        }
+	        if (firstName.length() < 2) {
+	            throw new IllegalArgumentException(
+	                    "First name must be 2 characters or more.");
+	        }
+	    }
+	
+	    // Alternative Constructor
+	    public Employee(int id, String firstName) {
+	        this(id, firstName, null);
+	    }
+	
+	    // Instance methods
+	    public void getFullName() {
+	        if (lastName == null)
+	            System.out.println(firstName());
+	
+	        else
+	            System.out.println(firstName() + " "
+	                    + lastName());
+	    }
+	
+	    // Static methods
+	    public static int generateEmployeeToken() {
+	        return ++empToken;
+	    }
+	}
+Some more qualities of record classes are:
+1. You can use nested classes and interfaces inside a record.
 
-```java
-String htmlBeforeJava13 = "<html>\\n" +
-													" <body>\\n" +
-													" <p>Hello, world</p>\\n" +
-													" </body>\\n" +
-													"</html>\\n";
-String htmlWithJava13 = """ 
-												<html>
-														<body> 
-																<p>Hello, world</p>
-														</body> 
-												</html> 
-												""";
-```
+2. You can have nested records too, which will implicitly be static.
 
-14:
+3. A record can implement interfaces.
 
-Switch statement became standard.
+4. You can create a generic record class.
 
-Helpful NullPointerExceptions Finally NullPointerExceptions describe exactly which variable was null. 
+5. Records are serializable.
 
-```java
-author.age = 35;
---- Exception in thread "main" java.lang.NullPointerException: Cannot assign field "age" because "author" is null
-```
 
-Text-Blocks / Multiline Strings Introduced as an experimental feature in Java 13 (see above), multiline strings are now production-ready.
+### ‘sealed’ Classes
+sealed class will give us more control over which classes are allowed to extend our classes. In Java 11, a class can be final or extended. If you want to control which classes can extend your super class, you can put all classes in the same package and you give the super class package visibility. However, it is not possible anymore to access the super class from outside the package. As an example, see the code below:
 
-AND Sealed Classes - Preview:
+	public abstract class Fruit {}
+ 
+	public final class Apple extends Fruit {}
+ 
+	public final class Pear extends Fruit {}
+ 
+	private static void problemSpace() {
+	    Apple apple = new Apple();
+	    Pear pear = new Pear();
+	    Fruit fruit = apple;
+	    class Avocado extends Fruit {};
+	}
+ 
+Here, we cannot stop Avocado to extend the Fruit class. If we make the Fruit class default, then the assignment of apple to fruit object would not compile. Hence, now we can use sealed classes to allow only specific classes to extend our superclass. An example is given below:
 
-If you ever wanted to have an even closer grip on who is allowed to subclass your classes, there’s now the sealed feature. 
+	public abstract sealed class FruitSealed permits AppleSealed, PearSealed {}
+ 
+	public non-sealed class AppleSealed extends FruitSealed {}
+ 
+	public final class PearSealed extends FruitSealed {}
+ 
+As we see, we use a new keyword sealed to denote that this is a sealed class. We define the classes that can be extended using the permits keyword. Any class which extends the sealed class can be either final like PearSealed or can be extended by other classes by using the non-sealed keyword when declaring the class as with AppleSealed.
 
-```java
-public abstract sealed class Shape permits Circle, Rectangle, Square {...}
-```
+This implementation would allow AppleSealed to be assigned to FruitSealed class but wont allow any other classes not defined by permits keyword to extend FruitSealed class. More on sealed classes here.
 
-This means that while the class is public, the only classes allowed to subclass Shape are Circle, Rectangle and Square.
+### InstanceOf improvement
+
+previously we used to use InstanceOf like this, and then caste grape, now we can cast directly to the variable as below: 
+	private static void oldStyle() {  
+	    Object o = new Grape(Color.BLUE, 2);  
+	    if (o instanceof GrapeClass) {  
+	        Grape grape = (Grape) o;  
+	        System.out.println("This grape has " + grape.getPits() + " pits.");  
+	    }  
+	}
+
+Here, we needed to explicitly cast the object to type  **_Grape_**  and then find out the number of pits. With Java 17, we can change this to:
+
+	private static void patternMatchingInJava17() {  
+	     Object o = new Grape(Color.BLUE, 2);  
+	     if (o instanceof Grape grape) {  
+	         System.out.println("This grape has " + grape.getPits() + " pits.");  
+	     }  
+	}
 
 ---
 
