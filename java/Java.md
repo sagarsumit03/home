@@ -154,6 +154,7 @@ This implementation would allow AppleSealed to be assigned to FruitSealed class 
 ### InstanceOf improvement
 
 previously we used to use InstanceOf like this, and then caste grape, now we can cast directly to the variable as below: 
+
 	private static void oldStyle() {  
 	    Object o = new Grape(Color.BLUE, 2);  
 	    if (o instanceof GrapeClass) {  
