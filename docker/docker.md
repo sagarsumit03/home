@@ -42,6 +42,9 @@ api docs: `http://localhost:8080/v2/api-docs`
 5.  below is how adding CMD in docker, with ENTRYPOINT get executed in order:
     https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
 
+
+> The ENTRYPOINT specifies a command that will always be executed when the container starts.  
+  The CMD specifies arguments that will be fed to the ENTRYPOINT.
 ```    
     -- No ENTRYPOINT
     
@@ -108,7 +111,7 @@ api docs: `http://localhost:8080/v2/api-docs`
                                                     # some systems dont have bash we can use /bin/sh
 #### typing `env` inside terminal will print all the environmental parameters
 
-## Docker Volumn:
+## Docker Volume:
 
 To persist data change made by the application, even after the restart (its lost post restarting a container). Now docker container rns on a HOST, and host would have a persistent system. We can add HOST persistent system to the container. This is a 2-way communication, means any change done by container will persist on HOST, and and change done to HOST file system, will reflect in Container.   
 example: if we want to persist logs.
@@ -248,5 +251,12 @@ volumes:
   mongo-data:
     driver: local
 ```
+
+  > `--driver local` means the volumes mongo-data is created on the same Docker host where you run your container. By using other Volume plugins, e.g.,  
+    ```
+    --driver=flocker
+    ```  
+    you are able to create a volume on a external host and mount it to the local host, say, /data-path. So, when your container writes to /data-  path, it actually writes to a external disk via network.
+
  - To bring up the containers using compose use: `docker-compose -f mongo.yaml up` here -f is file.
  - To bring down the containers using compose use: `docker-compose -f mongo.yaml down`. This will stop and remove the mentioned containers and network.
