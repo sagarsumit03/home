@@ -6,52 +6,9 @@
 
 ## JAVA Versions
 
-  1.5:
-  
-  Generics
-  AutoBoxing/Unboxing
-  Static import
-  Annotaions
+![](https://github.com/sagarsumit03/home/blob/master/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
 
-1.6:          
-
-JDBC 4.0 API
-
-1.7:          
-
-Strings in switch statement
-Automatic Resource Management in try/catch:
-`try (Scanner sc = new Scanner(System.in)){...}`
-
-1.8:          
-
-Lambda expressions
-Stream API
-JAVA Annotation Type:
-`@NotNull String s`
-PermGen removal from GC
-
-1.9:      
-
-HTTP 2.0 client
-JShell
-
-10: 
-
-Local-Variable Type Inference:
-`var s = "Sumit"` //Infers from the assigned value that variable s is a String type.
-
-11:
-
-Strings and Files got a couple new methods:
-
-```java
-"Marco".isBlank();
-"Mar\nco".lines();
-"Marco ".strip();
-```
-
-Java 17:  
+## Java 17:  
 ### ‘record’ Type
 record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs). Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
 
