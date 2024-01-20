@@ -9,7 +9,7 @@
 ![](https://raw.githubusercontent.com/sagarsumit03/home/1818730bf77bf7a5a5f84619c624e279ce6812c5/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
 ## Java 17:  
 ### ‘record’ Type
-record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs). Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
+<span style="background-color: #E83845">record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs).</span> Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
 
 	public class Fruit {
 	    private String name;
@@ -26,9 +26,9 @@ Although we can reduce most of our boilerplate code by using libraries like lomb
 	  System.out.println(fruit.getPrice());
 	}
 	
-As we can see, we can even define method local record objects. The records object automatically provides us with getter, setter, equals and hashcode methods for all its fields.
+As we can see, we can even define method local record objects. <span style="background-color: #E83845">The records object automatically provides us with getter, setter, equals and hashcode methods for all its fields.</span>
 
-The fields inside the record cannot be changed, and it can only be defined by the arguments given when declaring the record as shown above(but we can define static variables). We can also define a custom constructor which can validate the fields. It is recommended that we do not override the getters and setters of records which could affects its immutability. An example of a record with multiple constructors and static variables and methods is shown below:
+<span style="background-color: #E83845">The fields inside the record cannot be changed,</span> and it can only be defined by the arguments given when declaring the record as shown above(but we can define static variables). We can also define a custom constructor which can validate the fields. <span style="background-color: #E83845">It is recommended that we do not override the getters and setters of records which could affects its immutability.</span> An example of a record with multiple constructors and static variables and methods is shown below:
 
 	public record Employee(int id, String firstName,
 	        String lastName) {
