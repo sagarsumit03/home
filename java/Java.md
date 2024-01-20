@@ -6,7 +6,7 @@
 
 ## JAVA Versions
 
-![](https://github.com/sagarsumit03/home/blob/master/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
+![](https://github.com/sagarsumit03/home/blob/1818730bf77bf7a5a5f84619c624e279ce6812c5/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
 
 ## Java 17:  
 ### ‘record’ Type
