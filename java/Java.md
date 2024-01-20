@@ -6,8 +6,7 @@
 
 ## JAVA Versions
 
-![](https://github.com/sagarsumit03/home/blob/1818730bf77bf7a5a5f84619c624e279ce6812c5/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
-
+![](https://raw.githubusercontent.com/sagarsumit03/home/1818730bf77bf7a5a5f84619c624e279ce6812c5/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
 ## Java 17:  
 ### ‘record’ Type
 record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs). Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
