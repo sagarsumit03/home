@@ -80,7 +80,7 @@ Some more qualities of record classes are:
 
 
 ### ‘sealed’ Classes
-sealed class will give us more control over which classes are allowed to extend our classes. In Java 11, a class can be final or extended. If you want to control which classes can extend your super class, you can put all classes in the same package and you give the super class package visibility. However, it is not possible anymore to access the super class from outside the package. As an example, see the code below:
+sealed class will give us more control over which classes are allowed to extend our classes. <span style="background-color: #E83845">In Java 11, a class can be final or extended. If you want to control which classes can extend your super class, you can put all classes in the same package and you give the super class package visibility. However, it is not possible anymore to access the super class from outside the package.</span> As an example, see the code below:
 
 	public abstract class Fruit {}
  
@@ -95,7 +95,7 @@ sealed class will give us more control over which classes are allowed to extend 
 	    class Avocado extends Fruit {};
 	}
  
-Here, we cannot stop Avocado to extend the Fruit class. If we make the Fruit class default, then the assignment of apple to fruit object would not compile. Hence, now we can use sealed classes to allow only specific classes to extend our superclass. An example is given below:
+Here, <span style="background-color: #E83845">we cannot stop Avocado to extend the Fruit class.</span> If we make the Fruit class default, then the assignment of apple to fruit object would not compile. Hence, now we can use sealed classes to allow only specific classes to extend our superclass. An example is given below:
 
 	public abstract sealed class FruitSealed permits AppleSealed, PearSealed {}
  
@@ -103,7 +103,7 @@ Here, we cannot stop Avocado to extend the Fruit class. If we make the Fruit cla
  
 	public final class PearSealed extends FruitSealed {}
  
-As we see, we use a new keyword sealed to denote that this is a sealed class. We define the classes that can be extended using the permits keyword. Any class which extends the sealed class can be either final like PearSealed or can be extended by other classes by using the non-sealed keyword when declaring the class as with AppleSealed.
+<span style="background-color: #E83845">As we see, we use a new keyword sealed to denote that this is a sealed class. We define the classes that can be extended using the permits keyword. Any class which extends the sealed class can be either final like PearSealed or can be extended by other classes by using the non-sealed keyword when declaring the class as with AppleSealed.</span>
 
 This implementation would allow AppleSealed to be assigned to FruitSealed class but wont allow any other classes not defined by permits keyword to extend FruitSealed class. More on sealed classes here.
 
@@ -166,23 +166,6 @@ PermGen is replaced with Metaspace in Oracle/Sun JDK8, which is very similar. Th
 **Parallel/Throughput GC**: This is JVM’s default collector in JDK 8.
 
 ---
-
-### Annotation:
-
-The first main distinction between kinds of annotation is whether **they're used at compile time and then discarded** (like @Override) or placed in the compiled class file and **available at runtime** (like Spring's @Component)
-When compiling code with annotations, the compiler sees the annotation just like it sees other modifiers on source elements, like access modifiers (public/private) or final. When it encounters an annotation, it runs an annotation processor, which is like a plug-in class that says it's interested a specific annotation. The annotation processor generally uses the Reflection API to inspect the elements being compiled and may simply run checks on them, modify them, or generate new code to be compiled. @Override is an example of the first; it uses the Reflection API to make sure it can find a match for the method signature in one of the superclasses and uses the Messager to cause a compile error if it can't.
-
-CREATING AN ANNOTATION:
-1. declare it using the @interface keyword:`public @interface JsonSerializable { }`
-2. add meta-annotations to specify the scope and the target:
-
-```java
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.Type)
-public @interface JsonSerializable {
-}
-
-```
 
 ### Garbage Collection:
 
@@ -255,7 +238,7 @@ Heap is divided into sections which allows easy allocation and cleanup. Eden Spa
     
 ## Heap vs Stack
 
-Each Java virtual machine thread has a private Java virtual machine stack, created at the same time as the thread.
+<span style="background-color: #E83845">Each Java virtual machine thread has a private stack, created at the same time as the thread.</span>
 **local variables and methods are on the Java stack**.
 **All Objects are created in HEAP and the reference is in the stack.**
 It Causes StackOverflow Error.
@@ -270,21 +253,6 @@ The Java virtual machine has a heap that is shared among all Java virtual machin
 The memory leaks will be in the heap. It Causes OutOfMemoryError. 
 
 ---
-
-### JVM Architechture
-
-![Java%20125629a036d342ae886cf232be523260/Untitled%201.png](Java%20125629a036d342ae886cf232be523260/Untitled%201.png)
-
-1. Class Loader Subsystem: Classloader is used to load class files.
-2. Runtime Data Areas: 
-    1. Method Area: Method area stores data for each and every class like fields,constant pool,method’s data and information.
-    2. Heap: Heap is place where all objects are stored in JVM.
-    3. Java Thread: each and every thread has its own stack.
-    4. Program counter Registers: the address of instructions currently being executed and address of next instruction as well.
-3. Execution Engine: 
-    1. JIT compiler: JIT compiler compiles bytecodes to machine code at run time and improves the performance of Java applications.
-    2. Garbage Collector Garbage collection is the process by which JVM clears objects (unused objects) from heap to reclaim heap space.
-4. Native method interface is an interface that connects JVM with the native method libraries for executing native methods.
 
 ## Object Orientation Design
 
