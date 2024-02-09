@@ -1101,3 +1101,111 @@ Even with Serialization we can break immutability if someone has access to the b
 
 
 [JAVA 8](https://www.notion.so/JAVA-8-3c7b3b54902f481da4b6d484734db240?pvs=21)
+
+
+---
+
+- When try and finally block both return value, method will ultimately return value returned by finally block irrespective of value returned by try block.
+- Fail Safe Iterator : Fail Safe Iterator makes copy of the internal data structure (object array) and iterates over the copied data structure.  
+	Any structural modification done to the iterator affects the copied data structure.
+- MIN_TREEIFY_CAPACITY is the minimum number of buckets before a certain bucket is transformed into a Tree
+- regex - The Java Regex or Regular Expression is an API to define a pattern for searching or manipulating strings.
+- Why closing connection in try block may not be safe?  
+	Because exception may be thrown in try block before reaching connection closing statement.
+- Why closing connection in catch block may not be safe?  
+	Because inappropriate exception may be thrown in try block and we might not enter catch block to close connection.
+- Error: Stackoverflow  
+  Checked Exception : FileNotFound, SQLException, IOException, ClassNotFound  
+  Unchecked Exception : ArithmeticException, NullPointerException, ArrayIndexOutOfBoundsException  
+- The class Exception and all its subclasses that are not also subclasses of RuntimeException are checked exceptions.
+- The class RuntimeException and all its subclasses are unchecked exceptions. The class Error and all its subclasses are unchecked exceptions.
+- If you handle unchecked exception then program is not terminated. No need to handle unchecked exception by catching it or throwing it.
+- Checked Exceptions need throw and throws keyword. Checked Exception is propagated to JVM using throws keyword.
+- finally fails when System.exit or JVM crashes: Error occurs
+- Object - Throwable - Error - OutOfMemory, Stackoverflow, IOError
+					 - Exception - Checked
+```								 - Unchecked
+- java.lang.Object  
+  |_  java.lang.Throwable  
+    |_    java.lang.Exception  
+       |_     java.io.IOException  
+  	  |_     java.io.FileNotFoundException 
+``` 
+- Daemon thread invokes finalize method. Daemon threads are low priority threads which runs intermittently in background for doing garbage collection. 
+- System.gc();  
+  Runtime.getRuntime().gc();  
+  By calling these methods JVM runs the finalize() methods of any objects.  Calling these methods does not guarantee that it will immediately start performing garbage collection.  
+- Class must implement interface java.lang.Cloneable for calling clone method to the object or else it throws CloneNotSupportedException.  
+	shallow copy- If we implement Cloneable interface, we must override clone method and call super.clone() from it, invoking super.clone() will do shallow copy.  
+
+		@Override
+		public Object clone() {
+			   System.out.println("Doing shallow copy");
+			   try {
+					  return super.clone();
+			   } catch (CloneNotSupportedException e) {
+					  return null;
+			   }
+		}
+
+	Deep copy - We need to provide custom implementation of clone method for deep copying.  When the copied object contains some other object its references are copied recursively in deep copy. When you implement deep copy be careful as you might fall for cyclic dependencies
+
+			@Override
+			public CloneDeep clone(){ 		//CloneDeep is the class name
+				   System.out.println("Doing deep copy");				   
+				   Map<Integer,Integer> map=new HashMap<Integer,Integer>();
+				   Iterator<Integer> it=this.map.keySet().iterator();
+				   while(it.hasNext()){
+						  Integer key=it.next();
+						  map.put(key,this.map.get(key) );
+				   }				   
+				   CloneDeep cloneDetailedDeep=new CloneDeep(new String(name), map);				   
+				   return cloneDetailedDeep;
+			}
+  
+- In shallow copy, different object is created after cloning (i.e. clonedEmp is created from emp) but member variables keep on referring to same object (i.e. name and map).
+- In deep copy, different object is created after cloning (i.e. clonedEmp is created from emp) , also member variables starts referring to different objects (i.e. name and map).
+- In shallow copy, only fields of primitive data type are copied while the objects references are not copied. Deep copy involves the copy of primitive data type as well as object 
+	references. Lazy copy is a combination of both of these approaches.
+- Overriding in Java means that the method would be called on the run time based on type of the object and not on the compile time type of it . But static methods are class methods access to them is always resolved during compile time only using the compile time type information. Thats why static methods cannot be ovverriden.
+
+- StringBuffer is Synchronised where as StringBuilder is not Synchronised. And both are mutable and are created in Java heap.
+- In java when any changes are made to the argument in passed method  the value of original argument is not changed. Hence, Java is call by value.  
+	In java when any changes are made to the argument in passed method  the value of original argument is not changed. Hence, Java is NOT call by reference.  
+	In Call by reference, reference of argument is passed to method. Call by value means Copy of an argument is passed to method. 
+- Inner classes cannot not declare static initialization blocks. Inner classes cannot not declare member interfaces. Inner classes cannot not declare static members  
+	Top level class is always non static in java.  
+	Accessing method of inner class : new OuterClass().new InnerClass().method();  
+	Static and non-static member variables of outer class can be accessed inside methods of non-static class  
+- Static nested classes cannot be declared in abstract class/interface.  
+	Accessing static nested class : new OuterClass.StaticNestedClass().method();  
+	Only Static member variables of outer class can be accessed inside methods of static nested class.  
+	Top level class can never be static in java.  
+- AnonymousInnerClass means class with no name.
+  ```
+	interface MyInterface{
+		void m();
+	}
+	public class InnerClassTest {
+		public static void main(String[] args) {			   
+			   //Anonymous inner class
+			   new MyInterface(){ //implementing interface
+					  public void m(){ //Provide implementation of MyInterface's m() method
+							System.out.println("implementation of MyInterface's m() method");
+					  }
+			   }.m();         
+			}			
+		}/* OUTPUT : implementation of MyInterface's m() method */
+  ```
+- Static blocks executes when class is loaded in java. this keyword cannot be used in static blocks.  
+	Instance block executes only when instance of class is created, not called when class is loaded in java. this keyword can be used in instance block.
+- Serialization is process of converting object into byte stream. Once, object have have been transferred over network or persisted in file or in database, we could deserialize the object and retain its state as it is in which it was serialized.
+- Static or Transient : Used to avoid  certain member variables of class from getting Serialized.
+- serialVersionUID is used for version control of object.  
+	If we  don’t define serialVersionUID in the class, and any modification is made in class, then we won’t be able to deSerialize our class because serialVersionUID generated by java compiler for modified class will be different from old serialized object. And deserialization process will end up throwing java.io.InvalidClassException.  
+	The serialization at runtime associates with each serializable class a version number, called a serialVersionUID, which is used during deserialization to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization. 
+
+- Classloaders are used to dynamically load class at runtime in JVM
+	- Bootstrap Classloader - It loads JDK internal classes, typically loads rt.jar and other core classes for example java.lang.* package classes
+	- Extension Classloader - It loads classes from the JDK extensions directory, usually $JAVA_HOME/lib/ext directory.
+	- System Classloader - It loads classes from the current classpath that can be set while invoking a program using -cp or -classpath command line options.
