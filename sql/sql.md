@@ -1,5 +1,14 @@
 # SQL
 
+> Boost Performance of SQL:  
+	Do not use the *  operator in your SELECT statements. Instead, use column names.
+	Avoid using GROUP BY, ORDER BY, and DISTINCT as much as possible as  SQL Server engine creates a work table and puts the data on the work table
+	Select more fields to avoid SELECT DISTINCT
+	Create joins with INNER JOIN rather than WHERE
+	Use wildcards at the end of a phrase only. SELECT City FROM Customers WHERE City LIKE ‘Char%’ inplace of '%Char%'
+	Use EXISTS in place of IN. The Exists keyword evaluates true or false, but IN keyword compare all value in the corresponding sub query column
+	
+
 ## create Table:
 
     CREATE TABLE Employee(
