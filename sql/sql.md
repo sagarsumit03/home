@@ -7,6 +7,37 @@
 	Create joins with INNER JOIN rather than WHERE
 	Use wildcards at the end of a phrase only. SELECT City FROM Customers WHERE City LIKE ‘Char%’ inplace of '%Char%'
 	Use EXISTS in place of IN. The Exists keyword evaluates true or false, but IN keyword compare all value in the corresponding sub query column
+
+
+## Indexes:
+
+The basic syntax of CREATE INDEX is as follows −
+
+	CREATE INDEX index_name ON table_name;
+
+
+  ### Index Types
+PostgreSQL provides several index types: B-tree, Hash, GiST, SP-GiST and GIN.   
+Each Index type uses a different algorithm that is best suited to different types of queries. By default, the CREATE INDEX command creates B-tree indexes, which fit the most common situations.
+
+- Single-Column Indexes    
+A single-column index is one that is created based on only one table column.
+
+- Multicolumn Indexes  
+A multicolumn index is defined on more than one column of a table. 
+  
+		CREATE INDEX index_name ON table_name (column1_name, column2_name);
+- Unique Indexes  
+Unique indexes are used not only for performance, but also for data integrity. A unique index does not allow any duplicate values to be inserted into the table.
+
+		CREATE UNIQUE INDEX index_name on table_name (column_name);
+
+- Partial Indexes  
+A partial index is an index built over a subset of a table; the subset is defined by a conditional expression.
+
+  		CREATE INDEX index_name on table_name (conditional_expression);
+- Implicit Indexes  
+Implicit indexes are indexes that are automatically created by the database server when an object is created. Indexes are automatically created for primary key constraints and unique constraints.
 	
 
 ## create Table:
