@@ -18,6 +18,17 @@ Docker Image is _an executable package of software that includes everything need
 The status `ImagePullBackOff` means that a container could not start because Kubernetes could not pull a container image. The `BackOff` part indicates that Kubernetes will keep trying to pull the image, with an increasing back-off delay.
 
 
+## Ingress vs API Gateway:
+
+Ingress manages and route the traffic into Kubernetes services. Ingress as Nginx server which just do the work of forwarding the traffic to services based on the ruleset (ingress rule). Ingress is k8s native.
+
+![image](https://github.com/sagarsumit03/home/assets/8539646/3c576f30-daf1-41da-9b3b-55212e71ecb7)
+
+
+API Gateway could be installed anywhere (although there are now many that run in Kubernetes natively like Ambassador, Gloo, Kong), and they do have more functionality available like Oauth, rate limiting, etc. 
+An api gateway is used for application routing, rate limiting, security, request and response handling and other application related tasks.
+
+
 ## Deployment:
 
 Deployment works one level above ReplicaSet object. Deployment is recommended for stateless application(web) services.
