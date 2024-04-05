@@ -534,6 +534,94 @@ The PV is created for you based on your PVC’s configuration.
 	bar
 	```
 	
+
+
+### Liveness probes
+Liveness probes are used to determine whether a container is still running and functioning correctly. They check if the container is **alive and responsive**
+
+The `periodSeconds` field specifies that the kubelet should perform a liveness probe every 5 seconds. The `initialDelaySeconds` field tells the kubelet that it should wait 5 seconds before performing the first probe.
+
+   ExecAction handler example:
+   The below example shows a usage of the  `exec`  command to check if a file exists at the path _/usr/share/liveness/html/index.html_ by using the `cat` command. If no file exists, then the liveness probe will fail and the container will be restarted.
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-exec
+spec:
+  containers:
+  - name: liveness
+    image: registry.k8s.io/liveness:0.1
+    ports:
+    - containerPort: 8080
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /usr/share/liveness/html/index.html
+      initialDelaySeconds: 5
+      periodSeconds: 5
+```
+
+HTTPGetAction handler example:
+
+This example shows the HTTP handler, which will send an HTTP GET request on port 8080 to the _/health_ path. If a code between 200–400 is returned, the probe is considered successful.
+The httpHeaders option is used to define any custom headers you want to send.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-http
+spec:
+  containers:
+  - name: liveness
+    image: registry.k8s.io/liveness:0.1
+    livenessProbe:
+      httpGet:
+	path: /health
+	port: 8080
+	httpHeaders:
+	- name: Custom-Header
+	  value: ItsAlive
+      initialDelaySeconds: 5
+      periodSeconds: 5
+```
+
+The [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) uses liveness probes to know when to restart a container.
+
+### Readiness probes 
+Readiness probes are used to determine whether a container is ready to **accept incoming traffic.** They check if the container is in a state where it can safely handle requests.
+When the readiness probe fails for a container, the K8s control plane ensures that this container is not included in the load balancer’s pool of endpoints that receive incoming traffic.
+
+The `initialDelaySeconds` specifies how long to wait after the container starts before the first check is executed, and the `periodSeconds` defines the interval between subsequent probe checks.
+Unless you explicitly specify the `readinessProbe`in your YAML configuration, Kubernetes will not perform any readiness checks.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app-pod
+spec:
+  containers:
+  - name: my-app-container
+    image: my-app-image
+    ports:
+    - containerPort: 80
+    readinessProbe:
+      exec:
+        command:
+        - /bin/sh
+        - -c
+        - check-script.sh
+      initialDelaySeconds: 20
+      periodSeconds: 15
+```
+
 ---
 
 ![Components of Kubernetes](https://kubernetes.io/images/docs/components-of-kubernetes.svg)
