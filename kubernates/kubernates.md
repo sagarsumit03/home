@@ -543,7 +543,61 @@ The PV is created for you based on your PVC’s configuration.
 	bar
 	```
 	
+---
+###  CronJobs
 
+```bash
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12)
+# │ │ │ │ ┌───────────── day of the week (0 - 6) (Sun to Sat;
+# │ │ │ │ │                      7 is also Sunday on some systems)
+# │ │ │ │ │                   OR sun, mon, tue, wed, thu, fri, sat
+# │ │ │ │ │
+# * * * * *
+```
+example this job will run everyday at 11 pm:
+```bash
+0 23 * * *
+```
+each job will create a pod and run it:
+this job will run every minute
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox:1.28
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - date; echo Hello from the Kubernetes cluster
+          restartPolicy: OnFailure
+```
+
+To view the pods that have been created to run the jobs:
+
+```bash
+kubectl get pods
+```
+
+![kubectl get pods](https://spacelift.io/_next/image?url=https%3A%2F%2Fspaceliftio.wpcomstaging.com%2Fwp-content%2Fuploads%2F2022%2F12%2Fkubectl-get-pods.webp&w=3840&q=75)
+
+If you have lots of running pods you’ll want to filter the selection to the job name in your system using the `--selector`  argument.
+
+![](https://spacelift.io/_next/image?url=https%3A%2F%2Fspaceliftio.wpcomstaging.com%2Fwp-content%2Fuploads%2F2022%2F12%2Fkubectl-get-pods-selectorjob-name.webp&w=3840&q=75)
+
+---
 
 ### Liveness probes
 Liveness probes are used to determine whether a container is still running and functioning correctly. They check if the container is **alive and responsive**
