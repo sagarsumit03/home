@@ -408,6 +408,132 @@ Loadbalancer service type exposes the service through a loadbalancer resource is
 
 > Loadbalancer service type exposes the service through a loadbalancer resource issued by the cloud provider (AWS, Azure, GCP, etc). Once this laodbalancer is created, its DNS name will be assigned to the service. Traffic will come to the loadbalancer, then redirected to the service to be forwarded to the pods.
 
+
+### Persistant Volume:
+1. #### Persistent Volume access modes[](https://spacelift.io/blog/kubernetes-persistent-volumes#persistent-volume-access-modes)
+-   **`ReadWriteOnce (RWO)`** – The volume is mounted with read-write access for a _single_ Node in your cluster. Any of the Pods running on that Node can read and write the volume’s contents.
+-   **`ReadOnlyMany (ROX)`** – The volume can be concurrently mounted to any of the Nodes in your cluster, with read-only access for any Pod.
+-   **`ReadWriteMany (RWX)`** – Similar to ReadOnlyMany, but with read-write access.
+-   **`ReadWriteOncePod (RWOP)`** – This new variant, introduced as a beta feature in [Kubernetes v1.27](https://kubernetes.io/blog/2023/04/11/kubernetes-v1-27-release/), enforces that read-write access is provided to a _single_ Pod. No other Pods in the cluster will be able to use the volume simultaneously.
+
+2. #### Provisioning:
+	 Step 1: Check your cluster’s storage classes
+	 find out which storage classes are available in your cluster:
+
+	 ```bash
+	$ kubectl get storageclass
+	NAME                 PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+	standard (default)   k8s.io/minikube-hostpath   Delete          Immediate           false                  7d2h
+	```
+
+	 Step 2: Create a Persistent Volume:
+	 ```yaml
+	apiVersion: v1
+	kind: PersistentVolume
+	metadata:
+	  name: demo-pv
+	spec:
+	  accessModes:
+	    - ReadWriteOnce
+	  capacity:
+	    storage: 1Gi
+	  storageClassName: standard
+	  hostPath:
+	    path: /tmp/demo-pv
+	```
+	Applying the yaml:
+	```bash
+	$ kubectl get pv
+	NAME      CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+	demo-pv   1Gi        RWO            Retain           Available           standard                113s
+	```
+	 Step 3: Create a Persistent Volume Claim
+	 ```yaml
+	apiVersion: v1
+	kind: PersistentVolumeClaim
+	metadata:
+	  name: demo-pvc
+	spec:
+	  accessModes:
+	    - ReadWriteOnce
+	  resources:
+	    requests:
+	      storage: 1Gi
+	  storageClassName: standard
+	  volumeName: demo-pv
+	```
+	Step 4: Dynamically provisioning PVs:
+	Static provisioning of PVs, as shown above, is cumbersome: you must create the PV, then the PVC while ensuring their properties match.  
+The PV is created for you based on your PVC’s configuration.
+
+	```yaml
+	apiVersion: v1
+	kind: PersistentVolumeClaim
+	metadata:
+	  name: pvc-dynamic
+	spec:
+	  accessModes:
+	    - ReadWriteOnce
+	  resources:
+	    requests:
+	      storage: 1Gi
+	  storageClassName: standard
+	```
+	```bash
+	$ kubectl get pv
+	NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   REASON   AGE
+	demo-pv                                    1Gi        RWO            Retain           Bound    default/demo-pvc      standard                33m
+	pvc-fd022049-eabf-415c-937a-94927c84ef6f   1Gi        RWO            Delete           Bound    default/pvc-dynamic   standard                
+	```
+	Step 5: Attach PVCs to Pods
+	```yaml
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: pvc-pod
+	spec:
+	  containers:
+	    - name: pvc-pod-container
+	      image: nginx:latest
+	      volumeMounts:
+	        - mountPath: /data
+	          name: data
+	  volumes:
+	    - name: data
+	      persistentVolumeClaim:
+	        claimName: pvc-dynamic
+	```
+	**Spec.volumes.claimName** PV claimed by `pvc-dynamic` being mounted to `/data` inside the container.
+
+	```bash
+	# Get a shell inside the Pod
+	$ kubectl exec -it pod/pvc-pod -- bash
+
+	# No files in the volume yet
+	root@pvc-pod:/# ls /data
+
+	# Write a file to the volume
+	root@pvc-pod:/# echo "bar" > /data/foo
+
+	# The file now shows in the volume
+	root@pvc-pod:/# ls /data
+	foo
+	```
+
+	The files written to the volume are now stored independently of the Pod. You can delete the Pod and recreate it – your data will still be intact within the PV:
+	```bash
+	$ kubectl delete pod/pvc-pod
+	pod "pvc-pod" deleted
+
+	$ kubectl apply -f pod.yaml
+	pod/pvc-pod created
+
+	$ kubectl exec -it pod/pvc-pod -- bash
+
+	root@pvc-pod:/# cat /data/foo
+	bar
+	```
+	
 ---
 
 ![Components of Kubernetes](https://kubernetes.io/images/docs/components-of-kubernetes.svg)
