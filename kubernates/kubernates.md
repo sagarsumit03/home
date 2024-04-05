@@ -17,6 +17,15 @@ Docker Image is _an executable package of software that includes everything need
 ####  ImagePullBackOff
 The status `ImagePullBackOff` means that a container could not start because Kubernetes could not pull a container image. The `BackOff` part indicates that Kubernetes will keep trying to pull the image, with an increasing back-off delay.
 
+## Copying files from pod to local system
+
+	kubectl cp -n default my-pod:/path/to/file.txt .
+-n : namespace `default`  
+my-pod: pod name   
+/path/to/file.txt: location of file in pod  
+. : to current directory in laptop.  
+
+and vice versa for copying from local to pod
 
 ## Ingress vs API Gateway:
 
