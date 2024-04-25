@@ -1,124 +1,149 @@
 
-# All About AWS:
+# AWS
 
-1. Each Customer would have a account or no of accounts which is the base of AWS architechture: **ACCOUNT**
+## EKS architecture:
 
-2. To Deal with Latency and other issues deal with compliance policies. AWS has launched its cloud in multiple regions across the world. which can be called as **REGION**
+![](https://miro.medium.com/v2/resize:fit:2000/1*B7f0pdQcoT9HKCJ5mUtuzg.png)
 
-3. In a **region** you launch your actual application. You will have your own logical data center given to you by default, known as             VPC — Virtual Private Cloud. 
+### Worker nodes:
+![](https://miro.medium.com/v2/resize:fit:2000/0*rG-gau-zP9_j7LWX.png)
+- These nodes are a group of EC2 instances provisioned by AWS. 
+- Each Amazon EC2 node is deployed to one subnet. 
+- Each node is assigned a private IP address from a CIDR block assigned to the subnet.
 
-    it like a new on-premise branch of yours.
+## IP Range:
 
-4. Let’s say most of your customers are from N.Virginia and you have launched a really great application stack in that region, in your VPC. Unfortunately, the place where the real data center in N.Virginia is, got hit by a terrible earthquake and DC is no more operational. To deal with these kind of problems AWS came up with multiple zones in a region simply known as an **Availability Zone**. 
+Well, in an IPv4 address space, there's a total of 32 bits.
+![None](https://miro.medium.com/v2/resize:fit:700/1*K-qGk8aq454KsWt5FgmI3g.png)
 
-    An **availability zone** may have multiple Physical Data Centers with it’s own power supply, cooling and physical security. All the AZs in a region are connected via redundant and ultra low-latency networks. 
+The number that comes after the slash tells us how many bits are  **part of**  the network address (and ultimately what is left over, we can assign).
 
-    AWS considers factors like power distribution, floodplains, and tectonics when placing **Availability Zones** within a region so that each **availability zone** has a different risk profile.
+So let's take the IP address  **192.168.10.0/24.**
 
+**The "/24" here indicates that the first 24 bits are part of the network address (192.168.10) leaving only the remaining 8 bits able to be changed for specific host addresses (0-254).**
 
-5. Inside the **availability zone** is where we will create actual sub-networks — considering **VPC** is our entire big network, we can create multiple sub-networks based on the requirements to make the network as efficient and secure as possible. which is called **Subnet**.
+(meaning first 8+8+8 are constant and the rest will be in range so `192.168.10` is constant and rest can be in range from 0 to 254 )
+**The /16 will have first 2 constant 8+8 `192.168` 
+rest can be variable meaning  255 × 255**
 
-     <center><img title="a title" alt="Alt text" src="https://miro.medium.com/max/1400/1*ZHt34Boz4quQ5D9nq4MKXQ.webp"></center>
+### **A Practical Example**
 
+Let's say we choose  **10.0.0.0/24**  for a virtual network. This means for that virtual network you will have available the ranges 10.0.0.1–10.0.0.254 
 
-6. EC2: is a VM. We can install Kubernates on top of EC2 and Run as similar to EKS, but in EKS we have a managed offering.
-    Amazon Elastic Compute Cloud (EC2) is the Amazon Web Service you use to create and run virtual machines in the cloud (we call these virtual machines 'instances').
+Then you create a second virtual network using  **10.0.0.0/8**  which ranges from `10.0.0.1–10.255.255.254`.
+
+The problem here is that some addresses may overlap which could be a problem. For example, `they both have the capability to use 10.0.0.8 which will not work.`
+
+However, let's redo this situation and say you create one virtual network using 10.0.0.0/16 (ranging 10.0.0.1–10.0.255.254) and another using 10.1.0.0/16 (10.1.0.1–10.1.255.254), you will have no overlap.
+
+## Security Group vs NACL:
+
+![What is a Security Group](https://static.javatpoint.com/tutorial/aws/images/aws-nacl-vs-security-group.png)
+
+**NACLs operate at the subnet level and control traffic in and out of a VPC, while Security Groups operate at the instance level and control traffic to and from individual EC2 instances**.
+
+A NACL is a security layer for your VPC, that acts as a firewall for controlling traffic in and out of one or more subnets.
+
+![](https://cdn.shortpixel.ai/spai/w_1152+q_lossy+ret_img+to_webp/www.corestack.io/wp-content/uploads/img7-1024x456-1.jpg)
+
+![](https://cdn.shortpixel.ai/spai/w_1152+q_lossy+ret_img+to_webp/www.corestack.io/wp-content/uploads/img10-1024x303-1.jpg)
+
+![](https://cdn.shortpixel.ai/spai/w_1152+q_lossy+ret_img+to_webp/www.corestack.io/wp-content/uploads/img12-1024x475-1.jpg)
+
+![](https://cdn.shortpixel.ai/spai/w_1136+q_lossy+ret_img+to_webp/www.corestack.io/wp-content/uploads/img13-1024x799-1.jpg)
+
+![](https://learnwithaniket.com/wp-content/uploads/2021/08/Network_ACL_Outbound_Rules-1024x529.jpg)
+
+-   Every rule has a number associated with it.
+-   Every NACL has a rule with number as asterisk (*). This rule can not be modified. If there is no match then this rule is applied.
+- NACLs are stateless, ingress does not equal egress. Traffic that matches a rule for one direction will **_not_** be automatically allowed in the opposite direction. You would have to add an outbound rule.
+_You have now blocked all traffic to and from those associated subnets on port 22._
+
+_**NAT Gateway:**_  _A Network Address Translation (NAT) allows instances in your private subnet to connect to outside services like Databases but restricts external services to connecting to these instances._
+
+- Internet gateway allows the internet to reach the instance and vice versa. NAT allows only one way communication (instance to internet). A resource over the internet cannot initiate a connection to a resource using NAT, but can using an IGW.
+
+- NAT ensures that your instance in the private subnet is truly private. Even if a SG allows all traffic on a given port, no resource outside the VPC could connect to it. Extra layer of security and compliance.
+- **If the instance needs internet but will not accept external connections, use NAT.**
+- A Network Access Control List (NACL) is _stateless_. This means the rules are enforced in both directions. Thus, in your scenario, traffic would be blocked in _both directions_.
+
+![How to create a security group using the AWS Management Console?](https://www.manageengine.com/log-management/images/amazon-vpc-security-groups-ss3-24.png)
+
+You can either add security group rules now or after creating the security group.
+![How to create a security group using the AWS Management Console?](https://www.manageengine.com/log-management/images/amazon-vpc-security-groups-ss4-24.png)
+
+Security Groups are stateful, ingress equals egress. Traffic that matches a rule for one direction will also be allowed automatically in the opposite direction.
+
+![](https://cdn.shortpixel.ai/spai/w_1136+q_lossy+ret_img+to_webp/www.corestack.io/wp-content/uploads/img4.jpg)
+
+![](https://cdn.shortpixel.ai/spai/w_1488+q_lossy+ret_img+to_webp/www.corestack.io/wp-content/uploads/img5.jpg)
+
+## Subnet:
+A subnet, or subnetwork, is **a network inside a network**.
+- A subnet is essentially a range of IP (v4 and v6) addresses.
+- A subnet must live within a single Availability Zone.
+- -   **Private Subnet:**  If there is no route to the internet in the Route table associated with the subnet then the subnet is said to be a Private subnet.  
+    **Use Case:**  Database servers and other application servers that should not be exposed to the internet are present in Private Subnet.  
     
-     <center><img title="a title" alt="Alt text" src="https://res.cloudinary.com/practicaldev/image/fetch/s--7Ntoevf0--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/6ss4tm7zf6pbvis2ik4c.png"></center>
+- -   **Public Subnet:**  If there is an internet gateway attached to the Route table of the subnet.  
+    **Use Case:**  Web Servers and other servers that need direct internet access are placed in Public subnets.
+![Default VPC](https://cdn.hashnode.com/res/hashnode/image/upload/v1699528395651/kSuv86jll.png?auto=format&auto=compress,format&format=webp)
 
-     <center><img title="a title" alt="Alt text" src="https://res.cloudinary.com/practicaldev/image/fetch/s--AiuI0FxJ--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/8yw2h5bg5oevf9es93fr.png"></center>
+Contrary to RDS, there is no such option for EC2 instances. **They are created in a subnet and if you want multi-az you will need to launch multiple instances in different subnets across the availability zones.**
+you could then create an ELB and configure this ELB to distribute the traffic between them. Bear in mind that the ELB will reserve one private IP in each of the subnets.
 
-    <center><img title="a title" alt="Alt text" src="https://res.cloudinary.com/practicaldev/image/fetch/s--mwyeHH_m--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/ll4paggcd0m45dnk8ves.png"></center>
+Availability Zone A and B have divided VPC of IP range `10.0.0.0/16` to `10.0.0.0/24` and `10.0.0.0/24` 
+## VPC:
+![](https://miro.medium.com/v2/resize:fit:1400/1*j65csQd0VgvDS6dYyWVFPg.png)
 
-
-    ECR — ECR stands for Elastic Container Registry. It is basically used as a Docker Container Registry. We can create repositories in ECR and maintain docker images inside a repository and pull and push them accordingly.
-
-    > NOTE: EC2s with Instance Storage cannot be stopped or rebooted as they are ephemeral in nature, they can only be terminated. But EBS backed EC2s can be rebooted, stopped and started without Data Loss.
-
-    S3 — S3 stands for Simple Storage Service. S3 is an extremely simple cloud storage service by AWS. It stores everything as an object in buckets. S3 objects can range in size from a minimum of 0 bytes to a maximum of 5 terabytes.
-    
-
-
-> With IaaS services, such as Amazon EC2, your company can consume compute servers, known as “instances”, on-demand. This means that the hardware and software stack, up to the operating system is managed for you.
-
-> Examples of database PaaS offerings include Amazon RDS.
-
-> Examples of SaaS services: Google Apps, Microsoft Office 365, and Salesforce.
-7. For Database there is RDS.
-
-8. DynamoDB — Amazon DynamoDB is a NoSQL database which basically supports key-value and document data structures. 
-
-9. Network:
-
-    The primary network components in your account are the following—
-
-        Internet Gateway
-
-        Implicit Router(Virtual)
-
-        Route Tables
-
-        NACL — Network Access Control Lists
-
-        NAT Gateway
-
-        Security Groups
-
-     <center><img title="a title" alt="Alt text" src="https://miro.medium.com/max/1400/1*dJ6mjVisKyMR5wtlRKtP3A.webp"></center>
-
-    To create anything in the account, VPC should exist first, so we’ll start with VPC.
-
-    CIDR:
-
-    When creating a VPC, we need to specify a CIDR block which will be our primary network of the VPC. This primary network can be further split into subnets. 
-    The biggest IPv4 CIDR block that can be created is /16 and the smallest that can be created is /28.
-
-    > For example —Biggest:x.x.x.x/16 [10.0.0.0/16] & Smallest: x.x.x.x/28[10.0.0.0/28]. We cannot go below /16 and beyond /28.
-
-    This CIDR block is always considered private by AWS irrespective of the range we use, as the IPs used from this range are only used for Private communication between the instances and not for Public/Internet communication. So even if we specify 150.0.0.0/16 which is a public IP Range, AWS treats this as a private IP and you cannot reach the internet using these IPs. `For public communication we can ask AWS to assign us an Public or Elastic IP to the instance.`
-
-    ## Elastic IP, Public IP and Private IP:
-
-    **Elastic IP** — Elastic IP is a combination of static and public IP in AWS that can be added to your account and can be assigned to instances whenever required.
-
-    Use Case: Lets say you hosted a service which should be accessible from the Internet. So you assign an elastic IP, so that this service is reachable via this EIP. In case the instance where the service is hosted went down, you can still remap it to a different instance and make the service available on the same IP.
-
-    **Public IP** — Unlike Elastic IP, this is dynamic Public IP. You will get a public IP to an instance which is reachable via internet. But in case you stop your instance and start it later, you would get a completely different Public IP address.
-
-    **Private IP** — This IP is mandatory and is used for internal communication between instances within a VPC or across multiple VPCs in case of VPC Peering is set up. More on VPC Peering in a different article. This IP is given from the CIDR range we assigned when we created the VPC.
+-   A VPC spans all availability zones in a region.
+- A VPC can have multiple subnets
 
 
-    Internet Gateway
+## ECS vs EKS:
+**Elastic Container Service**
+-   ECS relies on AWS-provided services like ALB,  [Route 53](https://www.bmc.com/blogs/an-introduction-to-aws-route-53/), etc.,
+-   EKS handles all these mechanisms internally, just as in any old Kubernetes cluster.
+- EKS kubernates Control plane service where etcd, etc stays is managed by AWS.
+-    AWS ECS has limited ability in the way of readiness/liveness probes. Only a container health check is available in the task definition.
+-  The number of containers you can run on a single ECS instances vs. managed EKS is significant. ( 120 tasks vs. 750 pods).
 
-    As the name suggests it’s a device which will allow you to reach internet. Think of your home Router/Access Point which simply does the same job — allows your devices to communicate with internet. But the only difference is this IGW is horizontally scalable, highly available unlike your home access point where you will need to restart sometimes.
+-   AWS EKS can scale intra-region. AWS ECS can only scale in the same region.
+- EKS is a kubernetes solution, ECS is a "docker-compose" solution kind if.
 
-    > You can only attach one IGW to a VPC at any time. By default the maximum no of IGWs allowed per region are 5.
+--- 
+## Load Balancers:
 
-    Implicit Router: holds the Route Table in **VPC**. This is implicit and can't be accessed by **USER**. Route Table is public and can be accessed from **VPC**.
+AWS provides 2 load balancers:
+	1. Application Load Balancer
+	2. Network Load Balancer
 
-    Route Table: 
-
-    These tables are no different from your Route Tables in a Home Based Router/Access Points. These will tell how your resources in one subnet can reach the Internet or any other resources in any other subnet. A route table can be associated with multiple subnets, however one subnet can only be associated with one route table at a time. A route table in AWS looks like this —
-
-    <center><img title="a title" alt="Alt text" src="https://miro.medium.com/max/1400/1*J5Eb2JRGX3IPfmlEIM5olA.webp"></center>
-
-    It has destination and a Target. Destination can be a single IP address or an entire CIDR block. Target is the actual resource in AWS where the traffic gets routed Target can be one of these -`[IGW, Instance, Egress only IGW, NAT Gateway, Network Interface, Outpost Local Gateway, Peering Connection, Transit Gateway, Virtual Private Gateway]`.
+### Network load Balancer:
+1.  NLB runs at the transport layer which is  **OSI layer 4**
+2. Support protocols like TCP and UDP
+![AWS network load balancer workflow](https://devopscube.com/wp-content/uploads/2023/08/nw-load-balancer.gif)
 
 
-    NACL — Network Access Control List
 
-    Basically a NACL in AWS is a stateless firewall — meaning you have to explicitly tell what should be allowed and what should be denied. So there should be Set of Inbound and Outbound Rules both specifying Allowed and Denied Traffic. `By default NACL allows ALL inbound and outbound traffic.` Like Route Tables, NACLs can also be associated to multiple subnets, however one subnet can only be associated with one NACL at a time. A default NACL in AWS looks like this —
+### Application Load Balancer:
+1. ALB supports routing rules like path-based routing.
+2. Supports protocols like HTTP, HTTPS, HTTP/2, gRPC, WebSockets, etc.
+3. ALB runs at the application layer, which is  **OSI layer 7**.
+4. You can add ASG to Target Group that is mapped to a ALB.
+![AWS application load balancer  workflow](https://devopscube.com/wp-content/uploads/2023/08/appliation-load-balancer.gif)
 
-     <center><img title="a title" alt="Alt text" src="https://miro.medium.com/max/1400/1*wYK37el8DcUWWRDiltsBvQ.webp"></center>
+> ### Key Differences 
 
-    NAT Gateway
+1. The network load balancer just forward requests whereas the application load balancer examines the contents of the HTTP request header to determine where to route the request
 
-    NAT stands for Network Address Translation and basically enables your Resources in a Private Subnet communicate with internet without assigning each resource a Public IPv4 Address. I specifically mentioned IPv4 address because, 
-    
-    > an IPv6 address has no concept of Private/Public Address. Each IPv6 address is a public IP and a Global Unicast Address which means anyone on the internet can reach out to this address, given there are no NACLs written to deny traffic to this address.
+2. Network load balancing cannot assure availability of the application, where as Application load balancing can.
 
-    So the best use case of a NAT Gateway would be — when you want your resources in Private Subnet access internet, but prevent the internet from initiating a connection to those Resources.
+4. NLB cant direct traffic to Lamdba functions.
 
-    Security Group
+3. So, if you want requests for the v1 API endpoint to be routed to an autoscaling group of EC2 instances and requests for the v2 API endpoint routed to another group of instances, then your best option is the ALB because it allows you to configure rules that make your desired routing possible.
 
-    Unlike NACL, Security Group is a Stateful Firewall — meaning if inbound traffic is allowed by you, outbound response from your resource is automatically allowed irrespective of your Outbound Rules. Security Group can be stateful by keeping track of connections. The primary difference between a Security Group and NACL is this — Security Group is Stateful while a NACL is not, it doesn’t keep track of any connections. Security Group works at instance level while a NACL works at Subnet level. So you can think of Security Group as a Firewall to an Instance — it can be an EC2 instance or a Database instance.
+	On the other hand, if you just want that clients coming from Germany are routed to one autoscaling group and clients from the USA to another group, the NLB should be sufficient because you can set up rules that match the IP addresses of those countries.
+
+> ### **What is a target group?**
+
+A  **target group**  contains EC2 instances to which a  **load balancer**  distributes workload.
