@@ -114,6 +114,8 @@ Availability Zone A and B have divided VPC of IP range `10.0.0.0/16` to `10.0.0.
 --- 
 ## Load Balancers:
 
+![](https://github.com/sagarsumit03/home/blob/master/AWS/alb-nlb.png)
+
 AWS provides 2 load balancers:
 	1. Application Load Balancer
 	2. Network Load Balancer
