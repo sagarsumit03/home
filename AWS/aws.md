@@ -123,7 +123,7 @@ AWS provides 2 load balancers:
 ### Network load Balancer:
 1.  NLB runs at the transport layer which is  **OSI layer 4**
 2. Support protocols like TCP and UDP
-![AWS network load balancer workflow](https://devopscube.com/wp-content/uploads/2023/08/nw-load-balancer.gif)
+![AWS network load balancer workflow](https://github.com/sagarsumit03/home/blob/master/AWS/nlb.gif)
 
 
 
@@ -132,7 +132,7 @@ AWS provides 2 load balancers:
 2. Supports protocols like HTTP, HTTPS, HTTP/2, gRPC, WebSockets, etc.
 3. ALB runs at the application layer, which is  **OSI layer 7**.
 4. You can add ASG to Target Group that is mapped to a ALB.
-![AWS application load balancer  workflow](https://devopscube.com/wp-content/uploads/2023/08/appliation-load-balancer.gif)
+![AWS application load balancer  workflow](https://github.com/sagarsumit03/home/blob/master/AWS/alb.gif)
 
 > ### Key Differences 
 
