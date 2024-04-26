@@ -684,6 +684,14 @@ spec:
       initialDelaySeconds: 20
       periodSeconds: 15
 ```
+## Ingress and Ingress Controller
+
+Ingress Resource: object with a set of routing rules.
+Ingress controller: just another pod(usually run with Deployment) running in k8.
+
+The ingress controller is responsible for reading the Ingress Resource information and processing that data accordingly.
+
+![image](https://github.com/sagarsumit03/home/assets/8539646/188ca3f6-e9d7-435a-8056-f884efda982c)
 
 ---
 
