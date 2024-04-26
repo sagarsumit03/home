@@ -646,7 +646,7 @@ spec:
     image: registry.k8s.io/liveness:0.1
     livenessProbe:
       httpGet:
-	path: /health
+        path: /health
 	port: 8080
 	httpHeaders:
 	- name: Custom-Header
@@ -692,6 +692,72 @@ Ingress controller: just another pod(usually run with Deployment) running in k8.
 The ingress controller is responsible for reading the Ingress Resource information and processing that data accordingly.
 
 ![image](https://github.com/sagarsumit03/home/assets/8539646/188ca3f6-e9d7-435a-8056-f884efda982c)
+
+> The Nginx ingress controller is nothing but a service of type `LoadBalancer`. What it does is be the public-facing endpoint for your services. The IP address assigned to this service can route traffic to multiple services. So you can go ahead and define your services as ClusterIP and have them exposed through the Nginx ingress controller.
+
+As mentioned, you will need the ingress controller service regardless of how many ingress resources you have. So go ahead and apply this code on your EKS cluster.
+
+Now let's see how you would expose your pod to the world through Nginx-ingress. Say you have a wordpress deployment. You can define a simple ClusterIP service for this app:
+
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  labels:
+	    app: ${WORDPRESS_APP}
+	  namespace: ${NAMESPACE}
+	  name: ${WORDPRESS_APP}
+	spec:
+	  type: ClusterIP
+	  ports:
+	  - port: 9000
+	    targetPort: 9000
+	    name: ${WORDPRESS_APP}
+	  - port: 80
+	    targetPort: 80
+	    protocol: TCP
+	    name: http
+	  - port: 443
+	    targetPort: 443
+	    protocol: TCP
+	    name: https
+	  selector:
+	    app: ${WORDPRESS_APP}
+This creates a service for your wordpress app which is not accessible outside of the cluster. Now you can create an ingress resource to expose this service:
+
+	apiVersion: extensions/v1beta1
+	kind: Ingress
+	metadata:
+	  namespace: ${NAMESPACE}
+	  name: ${INGRESS_NAME}
+	  annotations:
+	    kubernetes.io/ingress.class: nginx
+	    kubernetes.io/tls-acme: "true"
+	spec:
+	  tls:
+	  - hosts:
+	    - ${URL}
+	    secretName: ${TLS_SECRET}
+	  rules:
+	  - host: ${URL}
+	    http:
+	      paths:
+	      - path: /
+	        backend:
+	          serviceName: ${WORDPRESS_APP}
+	          servicePort: 80
+Now if you run kubectl get svc you can see the following:
+
+	NAME                      TYPE          CLUSTER-IP      EXTERNAL-IP    PORT(S)                   AGE
+	wordpress                 ClusterIP     10.23.XXX.XX   <none>         9000/TCP,80/TCP,443/TCP   1m
+	nginx-ingress-controller  LoadBalancer  10.23.XXX.XX    XX.XX.XXX.XXX  80:X/TCP,443:X/TCP   1m
+Now you can access your wordpress service through the URL defined, which maps to the public IP of your ingress controller LB service.
+
+
+#### Generally speaking:
+
+**LoadBalancer** type service is a L4(TCP) load balancer. You would use it to expose single app or service to outside world. It would balance the load based on destination IP address and port.
+
+**Ingress** type resource would create a L7(HTTP/S) load balancer service. You would use this to expose several services at the same time, as L7 LB is application aware, so it can determine where to send traffic depending on the application state.
 
 ---
 
