@@ -700,61 +700,61 @@ As mentioned, you will need the ingress controller service regardless of how man
 Now let's see how you would expose your pod to the world through Nginx-ingress. Say you have a wordpress deployment. You can define a simple ClusterIP service for this app:
 
 ```yaml
-	apiVersion: v1
-	kind: Service
-	metadata:
-	  labels:
-	    app: ${WORDPRESS_APP}
-	  namespace: ${NAMESPACE}
-	  name: ${WORDPRESS_APP}
-	spec:
-	  type: ClusterIP
-	  ports:
-	  - port: 9000
-	    targetPort: 9000
-	    name: ${WORDPRESS_APP}
-	  - port: 80
-	    targetPort: 80
-	    protocol: TCP
-	    name: http
-	  - port: 443
-	    targetPort: 443
-	    protocol: TCP
-	    name: https
-	  selector:
-	    app: ${WORDPRESS_APP
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ${WORDPRESS_APP}
+  namespace: ${NAMESPACE}
+  name: ${WORDPRESS_APP}
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9000
+    targetPort: 9000
+    name: ${WORDPRESS_APP}
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: ${WORDPRESS_APP
 ```
 This creates a service for your wordpress app which is not accessible outside of the cluster. Now you can create an ingress resource to expose this service:
 
 ```yaml
-	apiVersion: extensions/v1beta1
-	kind: Ingress
-	metadata:
-	  namespace: ${NAMESPACE}
-	  name: ${INGRESS_NAME}
-	  annotations:
-	    kubernetes.io/ingress.class: nginx
-	    kubernetes.io/tls-acme: "true"
-	spec:
-	  tls:
-	  - hosts:
-	    - ${URL}
-	    secretName: ${TLS_SECRET}
-	  rules:
-	  - host: ${URL}
-	    http:
-	      paths:
-	      - path: /
-	        backend:
-	          serviceName: ${WORDPRESS_APP}
-	          servicePort: 80
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: ${NAMESPACE}
+  name: ${INGRESS_NAME}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - ${URL}
+    secretName: ${TLS_SECRET}
+  rules:
+  - host: ${URL}
+    http:
+      paths:
+      - path: /
+	backend:
+	  serviceName: ${WORDPRESS_APP}
+	  servicePort: 80
 ```
 Now if you run kubectl get svc you can see the following:
 
 ```bash
-	NAME                      TYPE          CLUSTER-IP      EXTERNAL-IP    PORT(S)                   AGE
-	wordpress                 ClusterIP     10.23.XXX.XX   <none>         9000/TCP,80/TCP,443/TCP   1m
-	nginx-ingress-controller  LoadBalancer  10.23.XXX.XX    XX.XX.XXX.XXX  80:X/TCP,443:X/TCP   1m
+NAME                      TYPE          CLUSTER-IP      EXTERNAL-IP    PORT(S)                   AGE
+wordpress                 ClusterIP     10.23.XXX.XX   <none>         9000/TCP,80/TCP,443/TCP   1m
+nginx-ingress-controller  LoadBalancer  10.23.XXX.XX    XX.XX.XXX.XXX  80:X/TCP,443:X/TCP   1m
 ```
 Now you can access your wordpress service through the URL defined, which maps to the public IP of your ingress controller LB service.
 
@@ -766,60 +766,60 @@ Now you can access your wordpress service through the URL defined, which maps to
 **Ingress** type resource would create a L7(HTTP/S) load balancer service. You would use this to expose several services at the same time, as L7 LB is application aware, so it can determine where to send traffic depending on the application state.
 
 
-my personal example:
+> my personal example:
 ```yaml
-	apiVersion: apps/v1
-	kind: Deployment
-	metadata:
-	  name: spring-app
-	spec:
-	  replicas: 3
-	  selector:
-	    matchLabels:
-	      app: spring-app
-	  template:
-	    metadata:
-	      labels:
-	        app: spring-app
-	    spec:
-	      containers:
-	      - name: spring-app
-	        image: sagarsumit03/app
-	        ports:
-	        - containerPort: 8080
-	---
-	
-	apiVersion: v1
-	kind: Service
-	metadata:
-	  name: spring-app
-	spec:
-	  type: ClientIP
-	  selector:
-	    app: spring-app
-	  ports:
-	    - port: 8080
-	      targetPort: 8080
-	---
-	apiVersion: networking.k8s.io/v1
-	kind: Ingress
-	metadata:
-	  name: spring-app
-	  annotations:
-	    nginx.ingress.kubernetes.io/rewrite-target: /
-	spec:
-	  ingressClassName: nginx
-	  rules:
-	    - host: localhost
-	    - http:
-	        paths:
-	        - path: /api/s3
-	          pathType: Prefix
-	          backend:
-	            service:
-	              name: 'spring-app'
-	              port:
-	                number: 8080
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+	app: spring-app
+    spec:
+      containers:
+      - name: spring-app
+	image: sagarsumit03/app
+	ports:
+	- containerPort: 8080
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app
+spec:
+  type: ClientIP
+  selector:
+    app: spring-app
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: localhost
+    - http:
+	paths:
+	- path: /api/s3
+	  pathType: Prefix
+	  backend:
+	    service:
+	      name: 'spring-app'
+	      port:
+		number: 8080
 ```
 # https://stackoverflow.com/questions/51511547/empty-address-kubernetes-ingress
 ---
