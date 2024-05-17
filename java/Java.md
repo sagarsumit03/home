@@ -115,10 +115,13 @@ A permitted subclass must define a modifier. It may be declared final to prevent
 <span style="background-color: #E83845">Either mark them as Final to prevent further extension or Mark them as `non-sealed` for further extension.</span>
 
 	public final class Truck extends Vehicle {}
- 
-<span style="background-color: #EA738D">As we see, we use a new keyword sealed to denote that this is a sealed class. We define the classes that can be extended using the permits keyword. Any class which extends the sealed class can be either final like PearSealed or can be extended by other classes by using the non-sealed keyword when declaring the class as with AppleSealed.</span>
 
-This implementation would allow AppleSealed to be assigned to FruitSealed class but wont allow any other classes not defined by permits keyword to extend FruitSealed class. More on sealed classes here.
+ 	OR,
+
+ 	public non-sealed class Car extends Vehicle{}
+ 
+<span style="background-color: #EA738D">As we see, we use a new keyword sealed to denote that this is a sealed class. We define the classes that can be extended using the permits keyword. Any class which extends the sealed class can be either final like Truck or can be extended by other classes by using the non-sealed keyword when declaring the class as with Car.</span>
+
 
 ### InstanceOf improvement
 
