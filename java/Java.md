@@ -1,36 +1,43 @@
 
 
-# Java
 
-**Java is a Compiled + Interpreted Language. First the Code is compiled into bytecode resulting in .class file. After this the code is interpreted/executed at runtime**
+# Java
+> Java = Compiled + Interpreted. 
+First the Code is compiled into bytecode resulting in .class file. After this the code is interpreted/executed at runtime
+
 
 ## JAVA Versions
 
 ![](https://raw.githubusercontent.com/sagarsumit03/home/1818730bf77bf7a5a5f84619c624e279ce6812c5/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
 ## Java 17:  
 ### ‘record’ Type
-<span style="background-color: #E83845">record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs).</span> Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
+<span style="background-color: #EA738D">record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs).</span> Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
 
-	public class Fruit {
-	    private String name;
-	    private int price;
 
-	    //getters, setters, equals and hashcode methods
-	}
 	
-Although we can reduce most of our boilerplate code by using libraries like lombok, we can still reduce it even further with the help of records. With records the same code becomes:
+```java
+public class Fruit {
+	private String name;
+	private int price;
 
-	public static void doSomething() {
-	  record Fruit(String name, int price) {}
-	  Fruit fruit = new Fruit("Apple", 100);
-	  System.out.println(fruit.getPrice());
-	}
-	
-As we can see, we can even define method local record objects. <span style="background-color: #E83845">The records object automatically provides us with getter, setter, equals and hashcode methods for all its fields.</span>
+    //getters, setters, equals and hashcode methods
+}
+```
+Although we can reduce most of our boilerplate code by using libraries like lombok, we can still reduce it even further with the help of records. <span style="background-color: #EA738D">With records the same code becomes:</span>
 
-<span style="background-color: #E83845">The fields inside the record cannot be changed,</span> and it can only be defined by the arguments given when declaring the record as shown above(but we can define static variables). We can also define a custom constructor which can validate the fields. <span style="background-color: #E83845">It is recommended that we do not override the getters and setters of records which could affects its immutability.</span> An example of a record with multiple constructors and static variables and methods is shown below:
+```java
+public static void doSomething() {
+	record Fruit(String name, int price) {}
+	Fruit fruit = new Fruit("Apple", 100);
+	System.out.println(fruit.getPrice());
+}
+```	
+As we can see, we can even define method local record objects. <span style="background-color: #EA738D">The records object automatically provides us with getter, setter, equals and hashcode methods for all its fields.</span>
 
-	public record Employee(int id, String firstName,
+<span style="background-color: #EA738D">The fields inside the record cannot be changed,</span> and it can only be defined by the arguments given when declaring the record as shown above(but we can define static variables). We can also define a custom constructor which can validate the fields. <span style="background-color: #EA738D">It is recommended that we do not override the getters and setters of records which could affects its immutability.</span> An example of a record with multiple constructors and static variables and methods is shown below:
+
+```java
+public record Employee(int id, String firstName,
 	        String lastName) {
 	
 	    static int empToken;
@@ -67,6 +74,9 @@ As we can see, we can even define method local record objects. <span style="back
 	        return ++empToken;
 	    }
 	}
+
+```
+	
 Some more qualities of record classes are:
 1. You can use nested classes and interfaces inside a record.
 
@@ -80,47 +90,53 @@ Some more qualities of record classes are:
 
 
 ### ‘sealed’ Classes
-sealed class will give us more control over which classes are allowed to extend our classes. <span style="background-color: #E83845">In Java 11, a class can be final or extended. If you want to control which classes can extend your super class, you can put all classes in the same package and you give the super class package visibility. However, it is not possible anymore to access the super class from outside the package.</span> As an example, see the code below:
+sealed class will give us more control over which classes are allowed to extend our classes. <span style="background-color: #EA738D">In Java 11, a class can be final or extended. If you want to control which classes can extend your super class, you can put all classes in the same package and you give the super class package visibility. However, it is not possible anymore to access the super class from outside the package.</span> As an example, see the code below:
 
-	public abstract class Fruit {}
- 
-	public final class Apple extends Fruit {}
- 
-	public final class Pear extends Fruit {}
- 
-	private static void problemSpace() {
-	    Apple apple = new Apple();
-	    Pear pear = new Pear();
-	    Fruit fruit = apple;
-	    class Avocado extends Fruit {};
-	}
- 
-Here, <span style="background-color: #E83845">we cannot stop Avocado to extend the Fruit class.</span> If we make the Fruit class default, then the assignment of apple to fruit object would not compile. Hence, now we can use sealed classes to allow only specific classes to extend our superclass. An example is given below:
+```java
+public abstract class Fruit {}
 
-	public abstract sealed class Vehicle permits Car, Truck {
+public final class Apple extends Fruit {}
 
-	    protected final String registrationNumber;
-	
-	    public Vehicle(String registrationNumber) {
-	        this.registrationNumber = registrationNumber;
-	    }
-	
-	    public String getRegistrationNumber() {
-	        return registrationNumber;
-	    }
-	
-	}
+public final class Pear extends Fruit {}
+
+private static void problemSpace() {
+    Apple apple = new Apple();
+    Pear pear = new Pear();
+    Fruit fruit = apple;
+    class Avocado extends Fruit {};
+}
+```
+ 
+Here, <span style="background-color: #EA738D">we cannot stop Avocado to extend the Fruit class.</span> If we make the Fruit class default, then the assignment of apple to fruit object would not compile. Hence, now we can use sealed classes to allow only specific classes to extend our superclass. An example is given below:
+
+```java
+public abstract sealed class Vehicle permits Car, Truck {
+
+    protected final String registrationNumber;
+
+    public Vehicle(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+}
+```
 
 A permitted subclass must define a modifier. It may be declared final to prevent any further extensions:
-<span style="background-color: #E83845">Either mark them as Final to prevent further extension or Mark them as `non-sealed` for further extension.</span>
+<span style="background-color: #EA738D">Either mark them as Final to prevent further extension or Mark them as `non-sealed` for further extension.</span>
 
 
 
- 	public final class Truck extends Vehicle {}
-	
-	 	OR,
-	
-	public non-sealed class Car extends Vehicle{}
+```java
+public final class Truck extends Vehicle {}
+
+    OR,
+
+public non-sealed class Car extends Vehicle{}
+```
   	
   
  
@@ -131,26 +147,32 @@ A permitted subclass must define a modifier. It may be declared final to prevent
 
 previously we used to use InstanceOf like this, and then caste grape, now we can cast directly to the variable as below: 
 
-	private static void oldStyle() {  
-	    Object o = new Grape(Color.BLUE, 2);  
-	    if (o instanceof GrapeClass) {  
-	        Grape grape = (Grape) o;  
-	        System.out.println("This grape has " + grape.getPits() + " pits.");  
-	    }  
-	}
+```java
+private static void oldStyle() {  
+    Object o = new Grape(Color.BLUE, 2);  
+    if (o instanceof GrapeClass) {  
+   ->   Grape grape = (Grape) o;  
+        System.out.println("This grape has " + grape.getPits() + " pits.");  
+    }  
+}
+```
 
 Here, we needed to explicitly cast the object to type  **_Grape_**  and then find out the number of pits. With Java 17, we can change this to:
 
-	private static void patternMatchingInJava17() {  
-	     Object o = new Grape(Color.BLUE, 2);  
-	     if (o instanceof Grape grape) {  
-	         System.out.println("This grape has " + grape.getPits() + " pits.");  
-	     }  
-	}
+```java
+private static void patternMatchingInJava17() {  
+        Object o = new Grape(Color.BLUE, 2);  
+   ->   if (o instanceof Grape grape) {  
+            System.out.println("This grape has " + grape.getPits() + " pits.");  
+        }  
+}
+```
 
 ---
 
-### The **compiler is not backwards compatible** because bytecode generated with Java5 JDK won't run in Java 1.4 jvm (unless compiled with the -target 1.4 flag). But **the JVM is backwards compatible**, as it can run older bytecodes.
+
+### The **compiler is not backwards compatible** because Java5 code JDK won't run in Java 1.4 jvm (unless compiled with the -target 1.4 flag). 
+### But **the JVM is backwards compatible**, as it can run older code JRE5 can run 1.4 code.
 
 In brief, we can say:
 
@@ -160,36 +182,29 @@ JRE's are (usually) backward compatible.
 
 ---
 
-JDK:
-Java Development Kit is the core component of Java Environment and provides all the tools, executables and binaries required to compile, debug and execute a Java Program. JDK is a platform-specific software and that’s why we have separate installers for Windows Mac, and Unix system
-
-JVM:
-When we run a program, JVM is responsible for converting Byte code to the machine specific code. JVM is also platform dependent and provides core java functions like memory management, garbage collection, security etc
 
 `JVM is called virtual because it provides an interface that does not depend on the underlying operating system and machine hardware. This independence from hardware and the operating system is what makes java program write-once-run-anywhere.`
-
-JRE:
-JRE consists of JVM and java binaries and other classes to execute any program successfully. JRE doesn’t contain any development tools like java compiler, debugger etc.
 
 ![https://beginnersbook.com/wp-content/uploads/2013/05/jdk.jpg](https://beginnersbook.com/wp-content/uploads/2013/05/jdk.jpg)
 
 ---
 
-GC works in two simple steps known as Mark and Sweep:
+# Garbage Collection:
 
-Mark – it is where the garbage collector identifies which pieces of memory are in use and which are not
-Sweep – this step removes objects identified during the “mark” phase.
+### GC Pause:
+> The garbage collector needs to identify unused memory and reclaim it. During this process, the program may be stopped to ensure data consistency while the memory is being examined and managed.
 
-Java 8 PermGen and Metaspace
-PermGen is replaced with Metaspace in Oracle/Sun JDK8, which is very similar. The main difference is that Metaspace can expand at runtime.
+**Problem:**
+During a GC pause, the application is not running your code, it is essentially frozen, stopped. Therefore, if this happens in the middle of a website request and the pause lasts 200ms, that's 200ms for the client to wait for their page to load. 
 
-**Parallel/Throughput GC**: This is JVM’s default collector in JDK 8.
+JDK 8: The default collector in JDK 8 is Parallel GC. which has higher GC pause 200ms.
+JDK17: G1GC has lower GC pause, also new GC ZGC has much lower pause.
 
----
+1. G1GC works by dividing the old generation in multiple regions.
+2. G1GC concurrently identifies unused objects (vacant houses) in the background while the city (application) keeps running.
+3. Once a district (region) is marked, G1GC pauses the city (application) briefly. Live objects (occupied houses) are then carefully moved to another district (region), freeing up memory in the evacuated district for future use. 
+4. G1GC focuses on regions with the most unused objects (garbage). This ensures that the evacuation pauses are minimized.
 
-### Garbage Collection:
-
-![Java%20125629a036d342ae886cf232be523260/Untitled.png](Java%20125629a036d342ae886cf232be523260/Untitled.png)
 
 1. **Young** Generation
     
@@ -258,7 +273,7 @@ Heap is divided into sections which allows easy allocation and cleanup. Eden Spa
     
 ## Heap vs Stack
 
-<span style="background-color: #E83845">Each Java virtual machine thread has a private stack, created at the same time as the thread.</span>
+<span style="background-color: #EA738D">Each Java virtual machine thread has a private stack, created at the same time as the thread.</span>
 **local variables and methods are on the Java stack**.
 **All Objects are created in HEAP and the reference is in the stack.**
 It Causes StackOverflow Error.
