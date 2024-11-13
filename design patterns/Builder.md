@@ -60,57 +60,68 @@ Structure of the Builder Pattern
 Firstly, you need to define a base class with all args constructor. Then, you have to create a Builder class with attributes and setters for each argument of the base class. Each setter should return the builder. Then, need to create a build() methid that will construct and return object of base class.
 
 ```java
-public class Employee {
-    private String name;
-    private String phoneNo;
-    private int age;
-    ...
-    //getters and setters
+package com.example.test.demo.example.builder;
 
-    private Employee(EmployeeBuilder builder){
-        this.name = builder.name;
-        this.phoneNo = builder.phoneNo;
-        ...
+
+public class Pizza {
+    private final boolean cheese;
+    private final boolean mushrooms;
+    private final boolean capsicum;
+
+    public boolean isCheese() {
+        return cheese;
+    }
+
+    public boolean isMushrooms() {
+        return mushrooms;
+    }
+
+    public boolean isCapsicum() {
+        return capsicum;
+    }
+
+    public static class PizzaBuilder {
+        private boolean cheese;
+        private boolean mushrooms;
+        private boolean capsicum;
+
+        public PizzaBuilder withCheese(boolean cheese) {
+            this.cheese = cheese;
+            return this;
+        }
+
+        public PizzaBuilder withMushrooms(boolean mushrooms) {
+            this.mushrooms = mushrooms;
+            return this;
+        }
+
+        public PizzaBuilder withCapsicum(boolean capsicum) {
+            this.capsicum = capsicum;
+            return this;
+        }
+
+        Pizza build(){
+            return new Pizza(this);
+        }
+
+    }
+    
+    private Pizza(PizzaBuilder builder) {
+        this.mushrooms = builder.mushrooms;
+        this.cheese = builder.cheese;
+        this.capsicum = builder.capsicum;
+    }
+
+    public static PizzaBuilder builder(){
+        return new Pizza.PizzaBuilder();
     }
 }
-
-```
-```java
-public static class EmployeeBuilder{
-    private String name;
-    private String phoneNo;
-    private int age ;
-
-    public EmployeeBuilder name(String name) {
-        this.name = name;
-        return this;
-    }
-    public EmployeeBuilder age(int age) {
-        this.age = age;
-        return this;
-    }
-    public EmployeeBuilder phoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-        return this;
-    }
-
-    public buildEmployee(){
-          new Employee(this);
-    }
-}
-
 ```
 And this is how you return a new Employee 
 
 ```java
-public static void main(String args[]){
-
-    public Employee getEmployee() {  
-          return new EmployeeBuilder()  
-                .age("43")  
-                .name("Jeff")
-                .phoneNo("9963930163")
-                .buildEmployee();  
-    }  
+public static void main(String[] args) {
+        Pizza pizza = Pizza.builder().withCapsicum(true).withCheese(true).build();
+}
 
 ```
