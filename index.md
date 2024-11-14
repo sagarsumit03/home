@@ -10,7 +10,9 @@ Design Patterns:
    
    - [__Strategy Pattern__](design patterns/Strategy Pattern.md)  
 
-   - [__Decorator Pattern__](design patterns/DecoratorPattern.md)  
+   - [__Decorator Pattern__](design patterns/DecoratorPattern.md)
+     
+   - [__Memento Design Pattern__](design patterns/memento.md)
 
 Java:
 
