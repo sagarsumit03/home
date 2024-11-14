@@ -6,9 +6,9 @@
 > Memento real world example would be Undo/Redo in a text editor.
 
 The Memento Design pattern contains below 3 Elements:
-Where the **Originator** is the creating and manageing the state of the Object.  
-**Memento** is the actual snapshot of the object. (state).  
-**Caretaker** which takes care of restoring and creating snapshots. which in our example is the main class itself and we do not have a separate History class.  
+* Where the **Originator** is the creating and manageing the state of the Object.  
+* **Memento** is the actual snapshot of the object. (state).  
+* **Caretaker** which takes care of restoring and creating snapshots. which in our example is the main class itself and we do not have a separate History class.  
 
 <img src="https://github.com/sagarsumit03/home/blob/master/design%20patterns/memento_class.png" class="img-responsive" alt=""> </div>
 
