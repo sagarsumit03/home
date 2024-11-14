@@ -14,6 +14,8 @@ Design Patterns:
      
    - [__Memento Design Pattern__](design patterns/memento.md)
 
+   -  [__Prototype Design Pattern__](design patterns/prototype.md)
+
 Java:
 
    - [__Basic Java__](java/Java.md)
