@@ -1,5 +1,8 @@
 Design Patterns: 
 
+
+   - [__Design Patterns__](design patterns/design_patterns.md)
+  
    - [__Factory Pattern__](design patterns/FactoryPattern.md)  
     
    - [__Builder Pattern__](design patterns/Builder.md)  
@@ -14,7 +17,7 @@ Design Patterns:
      
    - [__Memento Design Pattern__](design patterns/memento.md)
 
-   -  [__Prototype Design Pattern__](design patterns/prototype.md)
+   - [__Prototype Design Pattern__](design patterns/prototype.md)
 
 Java:
 
