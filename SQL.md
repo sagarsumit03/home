@@ -53,9 +53,8 @@
 
 ## Nth Salary
 
-    SELECT salary FROM Employee ORDER BY id DESC LIMIT 5-1, 1;
-    
-    SELECT TOP 1 salary FROM (SELECT TOP 3 salary FROM employees ORDER BY salary DESC) AS emp ORDER BY salary ASC;
+   select min(emp_salary) from emp where emp_salary in (select emp_salary from emp  order by emp_salary desc limit 3);
+   
 
 ## Employees With Same Dept
 
