@@ -8,8 +8,7 @@
         dept number,
         Salary INTEGER, ManagerId INTEGER);
 
-    CREATE INDEX emp 	 /* Create Index */
-    ON Employee (id)
+    CREATE INDEX emp ON Employee (id);
 
 ## Select All
 
@@ -31,41 +30,46 @@
     INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 12,'Geet',Marketing,70000,NULL);
 
 
-## Duplicate Entry
+## Find Duplicate Names
 
     select name, count(name) from Employee group by name having count(name) >1;
     
-## Delete the duplicate entry
-
-    with cte as
-    (select b.id from Person a , Person b where a.Email = b.Email and a.Id < b.Id)
-
-    delete from Person where
-    Id in (select * from cte)
+## Delete the duplicate entry: 
+    to get duplicate : Where name is same but id is not same. 
+    
+    select distinct(a.name) from Employee a, Employee b where a.name = b.name and a.id <> b.id;
 
 ## Join
 
     select d.name from Department d inner join Employee e on d.name = e.dept; 
 
-## Create Index
-
-    /* Create Index */CREATE INDEX emp ON Employee (id)
 
 ## Nth Salary
 
-   select min(emp_salary) from emp where emp_salary in (select emp_salary from emp  order by emp_salary desc limit 3);
+    select min(Salary) from Employee where Salary in (select Salary from Employee order by Salary desc limit 3);
    
 
 ## Employees With Same Dept
 
-    select e1.name, e1.dept from Employee e1, Employee e2 where e1.name != e2.name and e1.dept = e2.dept and e1.dept = 'IT';
+    select e1.name, e1.dept from Employee e1, Employee e2 where e1.name != e2.name and e1.dept = e2.dept;
+
+## Find 3rd and 4th Highest Salary:
+offset : used to skip a specified number of rows in a query result. here it skips 1st and 2nd rows.
+
+    SELECT Salary FROM Employee ORDER BY Salary DESC LIMIT 2 OFFSET 2;
+
+## No of Empoyees in each Department:
+
+    select dept, count(*) from Employee group by dept;
+
 
 ## Employee with Highest Salary in Each Dept
 
-    select e1.dept, e1.name, e1.salary as Max_Salary from ( select max(salary) as totalSalary, dept from Employee group by dept) as TEMP inner join Employee e1 where e1.dept = TEMP.dept and e1.salary = TEMP.totalSalary; ----------- not working(priyanka)
+    MAX Salary in Each Department:
     
-    REPLACED WITH:
-    SELECT e1.dept, e1.name, e1.salary FROM Employee e1 WHERE e1.salary IN (SELECT max(salary) AS maxSalary From Employee GROUP BY dept)
+    select  Max(Salary), dept from Employee group by dept;
+    
+    SELECT dept, name, Salary FROM Employee WHERE (dept,Salary) IN (SELECT dept, MAX(Salary) FROM Employee GROUP BY dept)
 
 ## Employee who are also Managers
 
