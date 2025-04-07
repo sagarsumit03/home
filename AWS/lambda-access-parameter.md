@@ -102,6 +102,7 @@
       --assume-role-policy-document file://trust_policy.json
   ```
  - it will give you an output smething like this:
+   
   	```json
 	    {
 	    "Role": {
