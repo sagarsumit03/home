@@ -126,9 +126,11 @@
  	 ```
 
  - Attach the role with a policy:
-	 - awslocal iam attach-role-policy \
-      --role-name "AmazonSSMFullAccessRole" \
-      --policy-arn "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+	```	
+	awslocal iam attach-role-policy \
+	      --role-name "AmazonSSMFullAccessRole" \
+	      --policy-arn "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+      ```
  - list the policy:
    ```
    awslocal iam list-attached-role-policies \
