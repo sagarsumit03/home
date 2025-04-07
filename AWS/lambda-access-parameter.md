@@ -125,7 +125,7 @@
 	    }
 	}
 
- 	 ```
+  	```
 
  - Attach the role with a policy:
 	```bash
