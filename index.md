@@ -24,7 +24,11 @@ Java:
    - [__Basic Java__](java/Java.md)
       
 AWS:
+    [Accessing Parameters ](AWS/lambda-access-parameter.md)
+    [Accessing Secrets ](AWS/AWlambda-access-secret.md)
     [__AWS__](AWS/aws.md)  
+   
+    
 
 Threads:
    - [Blocking Queue](threads/blockingqueue.md)
