@@ -7,7 +7,7 @@
 - Pull Localstack in Orbstack. Run the localstack using below command:
 	`docker run -d --name localstack -p 4566:4566 -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/localstack/data localstack/localstack:latest`
 - Write a simple python function to access the ssm parameter:
-	```
+	```python
   import json
   import boto3
   
@@ -56,7 +56,7 @@
 	`zip <zipname.zip> <filename>`
 	In our case it will be: `zip function.zip test.py`
 - create the lambda function using below command:
-	```
+	```bash
 	awslocal lambda create-function \
     --function-name <function-name> \
     --runtime python3.10 \
@@ -71,7 +71,7 @@
 		* java: java11
 	* Role can be the default lambda role: `lambda-role` or if you want to add a s3 or secret store use that role: example: `AmazonSSMFullAccessRole`
 - create a SSM Parameter:
-	```
+	```bash
 	awslocal ssm put-parameter \
     --name "/my/parameter/name" \
     --value "myvalue" \
@@ -81,7 +81,7 @@
 	this will create a SSM parameter with name `/my/parameter/name` with value `myvalue`
 - Create a Role and Attach a Policy:
 - create a trust policy named trust_policy.json with the following content:
-	```
+	```json
 	{
       "Version": "2012-10-17",
       "Statement": [
@@ -96,11 +96,13 @@
     }
 	```
 - run the below command after that :
+  ```bash
 	awslocal iam create-role \
       --role-name "AmazonSSMFullAccessRole" \
       --assume-role-policy-document file://trust_policy.json
+  ```
  - it will give you an output smething like this:
-  	```
+  	```json
 	    {
 	    "Role": {
 	        "Path": "/",
@@ -126,13 +128,13 @@
  	 ```
 
  - Attach the role with a policy:
-	```	
+	```bash
 	awslocal iam attach-role-policy \
 	      --role-name "AmazonSSMFullAccessRole" \
 	      --policy-arn "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
       ```
  - list the policy:
-   ```
+   ```bash
    awslocal iam list-attached-role-policies \
       --role-name "AmazonSSMFullAccessRole"
     ```
