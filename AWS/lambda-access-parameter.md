@@ -100,30 +100,30 @@
       --role-name "AmazonSSMFullAccessRole" \
       --assume-role-policy-document file://trust_policy.json
  - it will give you an output smething like this:
-  ```
-    {
-    "Role": {
-        "Path": "/",
-        "RoleName": "AmazonSSMFullAccessRole",
-        "RoleId": "AROAQAAAAAAAEOAU7NOQP",
-        "Arn": "arn:aws:iam::000000000000:role/AmazonSSMFullAccessRole",
-        "CreateDate": "2025-04-07T09:44:17.190000+00:00",
-        "AssumeRolePolicyDocument": {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": {
-                        "AWS": "arn:aws:iam::000000000000:root"
-                    },
-                    "Action": "sts:AssumeRole"
-                }
-            ]
-        }
-    }
-}
+  	```
+	    {
+	    "Role": {
+	        "Path": "/",
+	        "RoleName": "AmazonSSMFullAccessRole",
+	        "RoleId": "AROAQAAAAAAAEOAU7NOQP",
+	        "Arn": "arn:aws:iam::000000000000:role/AmazonSSMFullAccessRole",
+	        "CreateDate": "2025-04-07T09:44:17.190000+00:00",
+	        "AssumeRolePolicyDocument": {
+	            "Version": "2012-10-17",
+	            "Statement": [
+	                {
+	                    "Effect": "Allow",
+	                    "Principal": {
+	                        "AWS": "arn:aws:iam::000000000000:root"
+	                    },
+	                    "Action": "sts:AssumeRole"
+	                }
+	            ]
+	        }
+	    }
+	}
 
-  ```
+ 	 ```
 
  - Attach the role with a policy:
 	 - awslocal iam attach-role-policy \
