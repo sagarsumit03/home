@@ -1248,3 +1248,18 @@ If you need to submit a task to a Java ExecutorService and you need a result fro
 	- Bootstrap Classloader - It loads JDK internal classes, typically loads rt.jar and other core classes for example java.lang.* package classes
 	- Extension Classloader - It loads classes from the JDK extensions directory, usually $JAVA_HOME/lib/ext directory.
 	- System Classloader - It loads classes from the current classpath that can be set while invoking a program using -cp or -classpath command line options.
+
+
+## Status Code:
+| Backend Status | Gateway Mapping Behavior            | Browser Sees     |
+|----------------|--------------------------------------|------------------|
+| 200            | Forwarded as-is                      | 200              |
+| 400            | Forwarded as-is                      | 400              |
+| 500            | Forwarded or transformed             | 500 (or custom)  |
+| 499            | Treated as timeout or error          | 502 / 504 / 500  |
+| Unknown/Invalid| Default error response               | 500              |
+
+499 from NGINX typically becomes a 502 at the gateway level.
+
+Example: Map all 5xx backend errors to a custom 503 with a friendly JSON message.
+
