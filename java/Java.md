@@ -1124,6 +1124,24 @@ Even with Serialization we can break immutability if someone has access to the b
 [JAVA 8](https://www.notion.so/JAVA-8-3c7b3b54902f481da4b6d484734db240?pvs=21)
 
 
+### Runnable vs. Callable
+The Runnable interface is very similar to the Callable interface. The Runnable interface represents a task that can be executed concurrently by a thread or an ExecutorService. The Callable can only be executed by an ExecutorService. Both interfaces only has a single method. There is one small difference between the Callable and Runnable interface though. The difference between the Runnable and Callable interface is more easily visible when you see the interface declarations.
+
+Here is first the Runnable interface declaration:
+
+public interface Runnable {
+    public void run();
+}
+And here is the Callable interface declaration:
+
+public interface Callable{
+    public Object call() throws Exception;
+}
+The main difference between the Runnable run() method and the Callable call() method is that the call() method can return an Object from the method call. Another difference between call() and run() is that call() can throw an exception, whereas run() cannot (except for unchecked exceptions - subclasses of RuntimeException).
+
+If you need to submit a task to a Java ExecutorService and you need a result from the task, then you need to make your task implement the Callable interface. Otherwise your task can just implement the Runnable interface.
+
+
 ---
 
 - When try and finally block both return value, method will ultimately return value returned by finally block irrespective of value returned by try block.
