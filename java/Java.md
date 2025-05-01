@@ -8,7 +8,6 @@ First the Code is compiled into bytecode resulting in .class file. After this th
 
 ## JAVA Versions
 
-![](https://raw.githubusercontent.com/sagarsumit03/home/1818730bf77bf7a5a5f84619c624e279ce6812c5/java/Screenshot%202024-01-20%20at%201.24.06%20PM.png)
 ## Java 17:  
 ### ‘record’ Type
 <span style="background-color: #EA738D">record classes are a special kind of immutable class which is meant to replace data transfer objects(DTOs).</span> Normally if we want to use some POJO inside our class or methods, we would have to declare the class along with defining all the getters, setters, equals and hashcode functions. For example to use a sample Fruit class in other places, we would have to define our class someway like below:
@@ -143,30 +142,17 @@ public non-sealed class Car extends Vehicle{}
 <span style="background-color: #EA738D">As we see, we use a new keyword sealed to denote that this is a sealed class. We define the classes that can be extended using the permits keyword. Any class which extends the sealed class can be either final like Truck or can be extended by other classes by using the non-sealed keyword when declaring the class as with Car.</span>
 
 
-### InstanceOf improvement
+## JDK 21 Features:
 
-previously we used to use InstanceOf like this, and then caste grape, now we can cast directly to the variable as below: 
-
-```java
-private static void oldStyle() {  
-    Object o = new Grape(Color.BLUE, 2);  
-    if (o instanceof GrapeClass) {  
-   ->   Grape grape = (Grape) o;  
-        System.out.println("This grape has " + grape.getPits() + " pits.");  
-    }  
-}
+### 1. Generational ZGC (Z Garbage Collector)
+ZGC does provide lower pause times than G1GC for low latency applications.
+```bash
+java -XX:+UseZGC -XX:+UseGenerationalZGC -jar yourapp.jar
 ```
 
-Here, we needed to explicitly cast the object to type  **_Grape_**  and then find out the number of pits. With Java 17, we can change this to:
+###2. VirtualThread:
+Use virtual threads only for code that involves blocking, such logging, file I/O, accessing databases, network calls. 
 
-```java
-private static void patternMatchingInJava17() {  
-        Object o = new Grape(Color.BLUE, 2);  
-   ->   if (o instanceof Grape grape) {  
-            System.out.println("This grape has " + grape.getPits() + " pits.");  
-        }  
-}
-```
 
 ---
 
