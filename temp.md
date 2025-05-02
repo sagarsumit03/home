@@ -112,3 +112,7 @@ Each one works separately but talks to the others.
 
 ---
 The main design goal of `Optional` is to provide a means for a function returning a value to indicate the absence of a return value.
+
+
+Client --> Embedded Tomcat --> DispatcherServlet --> HandlerMapping --> Controller Method --> Business Logic --> Response --> Client
+
