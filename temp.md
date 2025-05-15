@@ -151,3 +151,17 @@ and you can call this by calling:
 @Autowired
 @Qualifier("goat")
 Fetch fetch
+```
+
+autowired by constructor:
+```
+final FetchFromMongo mongo;
+    final  FetchFromDB db;
+
+    @Autowired(required = false)
+    public BooksController(FetchFromDB db, FetchFromMongo mongo){
+        this.mongo = mongo;
+        this.db = db;
+    }
+```
+but both the classes FetchFromDB, FetchFromMongo used in constructor should be marked as Spring bean else startup will fail.
