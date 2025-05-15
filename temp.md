@@ -138,3 +138,16 @@ program will fail. we need to either use @Qualifier with @AUtowired or use @Prim
 Even if you havent added any names to the class itself. The @Qualifier on @Autowired will take names as:
 
 if class name is `FetchFromDb` it will be `fetchFromDb`. similarly  @Qualifier has higher priority than @primary 
+
+you can give any name in @Component or @Service etc example: 
+
+```
+@Component("goat")
+public class FetchFromDB implements  Fetch
+```
+and you can call this by calling:
+
+```
+@Autowired
+@Qualifier("goat")
+Fetch fetch
