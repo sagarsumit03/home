@@ -134,3 +134,7 @@ and do a :
 Fetch fetch
 ```
 program will fail. we need to either use @Qualifier with @AUtowired or use @Primary with @Component
+
+Even if you havent added any names to the class itself. The @Qualifier on @Autowired will take names as:
+
+if class name is `FetchFromDb` it will be `fetchFromDb`. similarly  @Qualifier has higher priority than @primary 
