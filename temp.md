@@ -116,3 +116,21 @@ The main design goal of `Optional` is to provide a means for a function returnin
 
 Client --> Embedded Tomcat --> DispatcherServlet --> HandlerMapping --> Controller Method --> Business Logic --> Response --> Client
 
+---
+if you only give @Component on both classes:
+
+```
+@Component
+public class FetchFromMongo implements Fetch
+```
+and 
+```
+@Component
+public class FetchFromDB implements  Fetch
+```
+and do a :
+```
+@Autowired
+Fetch fetch
+```
+program will fail. we need to either use @Qualifier with @AUtowired or use @Primary with @Component
