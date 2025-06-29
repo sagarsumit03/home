@@ -1,167 +1,97 @@
-## ways to load a class:
-1.  Reference the class name in the code. The class will be loaded latest when the JVM finds that reference.
-    
-    ```java
-    SomeClass someInstance = null;
-    ```
-    
-2.  [Class.forName(String)](http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html#forName%28java.lang.String%29), to load and initialize the class. It uses classloader of current class.
-    
-    ```java
-     Class.forName("XYZ");
-    ```
-    
-3.  [ClassLoader#loadClass(String)](http://docs.oracle.com/javase/6/docs/api/java/lang/ClassLoader.html#loadClass%28java.lang.String%29), to load class, but doesn't initialize.You can get an instance of  `ClassLoader`  and invoke  `loadClass()`  on that instance, which can be a Custom ClassLoader or System ClassLoader.
-    
-    ```java
-    ClassLoader.getSystemClassLoader().loadClass("XYZ");
-    ```
-    “does not initialize” means: the class is known to the JVM, but its **static code is not yet run**.
+# Java & Architecture Notes
 
 ---
-1.  Thread scheduler schedules these threads only when CPU is idle.
-    
-2.  Daemon threads are service oriented threads, they serves all other threads.
-    
-3.  These threads are created before user threads are created and die after all other user threads dies.
 
-4.  Priority of daemon threads is always 1 (i.e. MIN_PRIORITY).
-    
-5.  User created threads are non daemon threads.
-    
-6.  JVM can exit even if Daemon thead is running.
-    
-7.  Daemon threads are low priority threads which runs intermittently in background for doing garbage collection.
-    
-8.  we can use isDaemon() method to check whether thread is daemon thread or not.
+## 🧠 Class Loading
 
-9.  we can use setDaemon(boolean on) method to make any user method a daemon thread. Generally, We must not make user threads as daemon.
-   
-10.  If setDaemon(boolean on) is called on thread after calling start() method than IllegalThreadStateException is thrown.
----
-## Callable and Future:
+1. Reference the class name in code; JVM loads it when first referenced:
 
--   The Callable interface is similar to Runnable but can return a result and throw checked exceptions.
--   Future represents the result of an asynchronous computation and provides methods for checking if the computation is complete and retrieving the result.
+   ```java
+   SomeClass someInstance = null;
+   ```
+2. Use `Class.forName("XYZ")` to load and **initialize** the class via current classloader.
+3. Use `ClassLoader.getSystemClassLoader().loadClass("XYZ")` to **load without initializing** (static blocks not executed yet).
 
 ---
-1.  `**wait**()`
 
-Purpose: Causes the current thread to wait until another thread invokes  `notify()`  or  `notifyAll()`  on the same object.
+## 🧶 Daemon Threads
 
-Behaviour: Releases the lock and enters the waiting state.
-
-2.  `**notify**()`
-
-Purpose: Wakes up one waiting thread.
-
-Behaviour: Only one thread is notified and attempts to acquire the lock. The choice is random.
-
-3.  `**notifyAll**()`
-
-Purpose: Wakes up all waiting threads.
-
-Behaviour: All threads are notified but only one can acquire the lock at a time.
-
-## CompletableFuture vs Future
-
-Non-blocking result
-
-❌ Must call `.get()` (blocking)
-
-✅ Can be non-blocking with callbacks like `.thenApply()`
-
-Chaining tasks
-
-❌ Not supported
-
-✅ Easily chain tasks (`thenApply`, `thenCompose`, etc.)
-Exception handling
-
-❌ Manual try-catch around `.get()`
-
-✅ Built-in methods like `.exceptionally()`
-
+* Daemon threads run in background (like GC), scheduled only when CPU is idle, and die when all user threads complete.
+* Always have priority `MIN_PRIORITY (1)`.
+* Check with `isDaemon()`; create by `setDaemon(true)` **before** `start()`. Changing afterward throws `IllegalThreadStateException`.
 
 ---
-**SOA:**
 
--   Follows “share-as-much-as-possible” architecture approach
--   Uses SOAP and XMLs
--   Maximizes application service reusability
+## 🔁 wait(), notify(), notifyAll()
 
-**MicroService:**
-
--   Follows “share-as-little-as-possible” architecture approach
--   Uses lightweight protocols such as HTTP/REST & AMQP
--   More focused on decoupling
-**Domain Driven Architecture**:
-* DDD is about trying to make your software a model of a real-world system or process. In using DDD, you are meant to work closely with a _[domain expert](http://en.wikipedia.org/wiki/Domain_expert)_ who can explain how the real-world system works.
-* Application is Divided into different domains:
-* In an online store, you'd have:
-
--   🛒 **Ordering** – deals with shopping carts and purchases.
-    
--   📦 **Shipping** – deals with packaging and delivery.
-    
--   💰 **Payments** – handles money.
-    
-
-Each one works separately but talks to the others.
-
+* `wait()` — current thread waits and releases lock until `notify()` or `notifyAll()` is called.
+* `notify()` — wakes one waiting thread (chosen arbitrarily).
+* `notifyAll()` — wakes all waiting threads; they compete for lock.
 
 ---
-The main design goal of `Optional` is to provide a means for a function returning a value to indicate the absence of a return value.
 
+## 📆 Callable vs Future vs CompletableFuture
 
-Client --> Embedded Tomcat --> DispatcherServlet --> HandlerMapping --> Controller Method --> Business Logic --> Response --> Client
+| Feature            | `Future`             | `CompletableFuture`                      |
+| ------------------ | -------------------- | ---------------------------------------- |
+| Non-blocking       | ❌ Blocks on `.get()` | ✅ Supports callbacks (`thenApply`, etc.) |
+| Chaining           | ❌ Not supported      | ✅ Easily chainable                       |
+| Exception handling | ❌ Manual on `.get()` | ✅ Built-in (`.exceptionally()`)          |
+
+* `Callable` is like `Runnable` but **returns a result** and can throw exceptions.
+* `Future` represents async result and supports checking/completion.
 
 ---
-if you only give @Component on both classes:
 
-```
-@Component
-public class FetchFromMongo implements Fetch
-```
-and 
-```
-@Component
-public class FetchFromDB implements  Fetch
-```
-and do a :
-```
-@Autowired
-Fetch fetch
-```
-program will fail. we need to either use @Qualifier with @AUtowired or use @Primary with @Component
+## 🏗️ Architecture Styles: SOA vs Microservices
 
-Even if you havent added any names to the class itself. The @Qualifier on @Autowired will take names as:
+* **SOA**: Share-as-much-as-possible; uses SOAP/XML.
+* **Microservices**: Share-as-little-as-possible; uses REST/HTTP or AMQP.
+* Both emphasize service reuse, but microservices are more **loosely coupled**.
 
-if class name is `FetchFromDb` it will be `fetchFromDb`. similarly  @Qualifier has higher priority than @primary 
+---
 
-you can give any name in @Component or @Service etc example: 
+## 📘 Domain-Driven Design (DDD)
 
-```
-@Component("goat")
-public class FetchFromDB implements  Fetch
-```
-and you can call this by calling:
+* Model software based on real-world **domain experts**.
+* Divide application into **bounded contexts** (e.g., Ordering, Shipping, Payments).
+* Each domain context is autonomous but integrates with others.
 
-```
-@Autowired
-@Qualifier("goat")
-Fetch fetch
-```
+---
 
-autowired by constructor:
-```
-final FetchFromMongo mongo;
-    final  FetchFromDB db;
+## 💡 Using `Optional`
 
-    @Autowired(required = false)
-    public BooksController(FetchFromDB db, FetchFromMongo mongo){
-        this.mongo = mongo;
-        this.db = db;
-    }
-```
-but both the classes FetchFromDB, FetchFromMongo used in constructor should be marked as Spring bean else startup will fail.
+* Primary goal: represent **absent values** gracefully instead of nulls.
+
+---
+
+## 🔧 Spring Dependency Injection (DI)
+
+* If multiple beans implement same interface, use:
+
+  * `@Qualifier("beanName")` or
+  * `@Primary` to indicate default bean.
+
+* `@Qualifier` takes precedence over `@Primary`.
+
+* Example:
+
+  ```java
+  @Component("goat")
+  public class FetchFromDB implements Fetch { … }
+
+  @Autowired
+  @Qualifier("goat")
+  Fetch fetch;
+  ```
+
+* Constructor injection example:
+
+  ```java
+  @Autowired(required = false)
+  public BooksController(FetchFromDB db, FetchFromMongo mongo) { … }
+  ```
+
+* **Note:** All used classes must be annotated as Spring beans (e.g., `@Component`, `@Service`), otherwise app startup fails.
+
+---
