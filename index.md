@@ -22,6 +22,8 @@ Design Patterns:
 Java:
 
    - [__Basic Java__](java/Java.md)
+   - [__Streams__](java/stream.md)
+   - [__MISC__](temp.md)
       
 AWS:
    -  [Accessing Parameters ](AWS/lambda-access-parameter.md)  
