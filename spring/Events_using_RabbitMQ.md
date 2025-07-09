@@ -1,6 +1,22 @@
 
 # 🛠️ Event-Driven Saga with RabbitMQ and Spring Boot
 
+## A Saga is a sequence of local transactions where each step has a compensating transaction if something fails later.
+Types:
+* Choreography: Services communicate via events (no central coordinator).  
+  Example: Order → Payment → Shipping → Notification  
+  1. Order Service emits OrderCreated event  
+  2. Payment Service listens for OrderCreated, processes payment, emits PaymentCompleted  
+  3. Shipping Service listens for PaymentCompleted, ships item, emits ItemShipped  
+
+* Orchestration: A central orchestrator calls each service and handles failures.
+  Example: Orchestration
+  1. Order Service calls OrchestratorService
+  2. Orchestrator calls PaymentService, waits for response
+  3. Then it calls ShippingService
+
+
+
 This project demonstrates how to coordinate distributed transactions using the **Saga Pattern** with **RabbitMQ** and **Spring Boot**.
 
 It simulates a flow:
