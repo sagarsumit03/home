@@ -56,21 +56,21 @@ Implicit indexes are indexes that are automatically created by the database serv
     select * from Employee;
 
 ## Insert Data
+```
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (11, 'Geet', 'Marketing', 20000, NULL);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (13, 'Sumit', 'IT', 300000, NULL);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (1, 'Sagar', 'IT', 250000, 13);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (4, 'Roohi', 'Support', 45000, NULL);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (3, 'Priyanka', 'Support', 50000, 4);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (5, 'Yogesh', NULL, 100000, NULL);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (6, 'Prahlad', 'HR', 220000, NULL);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (7, 'Varun', 'HR', 150000, 6);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (8, 'Satish', 'Admin', 120000, 9);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (9, 'Hemant', 'Admin', 100000, NULL);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (10, 'Shailendra', 'Marketing', 30000, 12);
+INSERT INTO Employee (id, name, dept, Salary, ManagerId) VALUES (12, 'Geet', 'Marketing', 70000, NULL);
 
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 11,'Geet',Marketing,20000,NULL);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 13,'Sumit',IT,300000,NULL);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 1,'Sagar',IT,250000,13);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 4,'Roohi',Support,45000,NULL);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 3,'Priyanka',Support,50000,4);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 5,'Yogesh',,100000,NULL);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 6,'Prahlad',HR,220000,NULL);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 7,'Varun',HR,150000,6);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 8,'Satish',Admin,120000,9);    
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 9,'Hemant',Admin,100000,NULL);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 10,'Shailendra',Marketing,30000,12);  
-    INSERT INTO Employee (id,name,dept,Salary,ManagerId) VALUES ( 12,'Geet',Marketing,70000,NULL);
-
-
+```
 ## Duplicate Entry
 
     select name, count(name) from Employee group by name having count(name) >1;
