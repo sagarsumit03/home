@@ -8,12 +8,22 @@ Service: `LoadBalancer` or `NodePort` is used by an Ingress Controller.
 <img width="1400" height="905" alt="image" src="https://github.com/user-attachments/assets/0de94517-98f8-4f0e-ad17-22879d3f62c3" />
 
 NodePort: on top of having a cluster-internal IP, expose the service on a port on each node of the cluster 
-By creating a NodePort service, you are saying to Kubernetes reserve a port on all its nodes and forwards incoming connections to the pods that are part of the service. it doesnt do load balancing
+1. By creating a NodePort service, you are saying to Kubernetes reserve a port on all its nodes and forwards incoming connections to the pods that are part of the service.
+2. it doesnt do load balancing  
 
 
 LoadBalancer: Leverages an external load balancer provided by the cloud provider:
 
-
+---
+### PDB: pod Disruption Budget
+1. Ensuring minimum availability during node upgrades.
+2. Preventing all replicas from being taken down at once during auto-scaling or rolling updates.
+3. uses
+   ```
+   minAvailable: 2
+   Or,
+   maxUnavailable: 1
+   ```
 
 ---
 
