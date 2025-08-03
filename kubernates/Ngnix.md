@@ -3,6 +3,18 @@
 
 This guide shows how to deploy a simple REST app (`vad1mo/hello-world-rest`) using Kubernetes and expose it via **NGINX Ingress**.
 
+
+Service: `LoadBalancer` or `NodePort` is used by an Ingress Controller.
+<img width="1400" height="905" alt="image" src="https://github.com/user-attachments/assets/0de94517-98f8-4f0e-ad17-22879d3f62c3" />
+
+NodePort: on top of having a cluster-internal IP, expose the service on a port on each node of the cluster 
+By creating a NodePort service, you are saying to Kubernetes reserve a port on all its nodes and forwards incoming connections to the pods that are part of the service. it doesnt do load balancing
+
+
+LoadBalancer: Leverages an external load balancer provided by the cloud provider:
+
+
+
 ---
 
 ## 📦 What You'll Deploy
