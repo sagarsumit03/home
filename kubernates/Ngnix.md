@@ -126,7 +126,11 @@ Add this line:
 ```
 198.19.249.2 myapp.local
 ```
-
+if you have multiple services then map it something like this:
+Then add this to /etc/hosts:
+```
+192.168.49.2 service-a.local service-b.local
+```
 ---
 
 ## ✅ Test It
