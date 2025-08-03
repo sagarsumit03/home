@@ -92,6 +92,30 @@ spec:
 
 ---
 
+### If you want to route based on the resouce `/api/` or `/web` you can do that as well:
+
+in the ingress path you can use below:
+```yaml
+http:
+  paths:
+    - path: /api(/|$)(.*)
+      pathType: Prefix
+      backend:
+        service:
+          name: service-a
+          port:
+            number: 80
+    - path: /web(/|$)(.*)
+      pathType: Prefix
+      backend:
+        service:
+          name: service-b
+          port:
+            number: 80
+```
+Here the paths are divided based on the path prefix /api goes to service A and /web goes to service B
+---
+
 ## ⚙️ Apply Resources
 
 ```bash
