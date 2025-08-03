@@ -91,6 +91,14 @@ spec:
 ```
 
 ---
+By Default the Ngnix Load Balancing is round robin but you can use `least_conn` or `ip_hash` for stiky sessions.
+you need to add a Annotation:
+```
+metadata:
+  name: ingress-myservicea
+  annotations:
+    nginx.ingress.kubernetes.io/load-balance: "least_conn"
+```
 
 ### If you want to route based on the resouce `/api/` or `/web` you can do that as well:
 
