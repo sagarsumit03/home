@@ -1,6 +1,9 @@
 
 #  Kubernates:
 
+ If the proxy hides the client, it's a forward proxy.
+| If the proxy hides the server, it's a reverse proxy. |
+
 ## Images:
 
 Docker Image is _an executable package of software that includes everything needed to run an_ application.
