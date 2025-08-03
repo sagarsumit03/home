@@ -16,6 +16,11 @@ This guide shows how to deploy a simple REST app (`vad1mo/hello-world-rest`) usi
 
 ## 📝 Step-by-Step
 
+### Deploy Ngnix Controller:
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/cloud/deploy.yaml
+```
+
 ### 1️⃣ Create `deployment.yaml`
 
 ```yaml
