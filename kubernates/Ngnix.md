@@ -26,6 +26,22 @@ LoadBalancer: Leverages an external load balancer provided by the cloud provider
    ```
 
 ---
+## Entrypoint vs CMD:
+1. To an Entrypoint you can only pass Arguments. The commands is like hardcoded.
+   example:
+   ```
+   ENTRYPOINT ["echo", "Message:"]
+   
+   example:
+   docker run <imageName> Sumit
+   // it will run echo Message Sumit.
+   but if you do:
+   docker run <imageName> cp /Users/abc /Users/efg
+   // it will just echo same and not do a copy.
+   // it will run echo Message cp /Users/abc /Users/efg.
+   ```
+
+---
 
 ## 📦 What You'll Deploy
 
