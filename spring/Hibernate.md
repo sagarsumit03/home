@@ -94,7 +94,8 @@ If no object with the given identifier is found, `load()` throws an `ObjectNotFo
 ---
 ## How to check Fetch Lazy and Eager 
 Here a Student can have many courses and many courses can have many students.
-```
+
+```java
 public class Student {
 
     @Id
@@ -115,7 +116,7 @@ public class Student {
 
 ```
 
-```
+```java
 public class Course {
 
     @Id
@@ -144,7 +145,8 @@ public class Course {
 
 to Test this: 
 If you see in the query you will only see Student query. but as soon as you do getCourses() you will get the secondary ones.
-```
+
+```java
 System.out.println("---- FETCH ORDER ----");
 Student student = studentRepo.findById(1L).orElse(new Student()); // SQL will fetch Order + Customer (EAGER)
 // // 1 query for student
@@ -156,7 +158,7 @@ int size =  student.getCourses().size(); // SQL for items will run **now** (LAZY
 As we are fetching only 1 student and N courses its not N+1 but as soon as you fetch N student using above query and 
 then to loop on Students and fetch courses it becomes N+1 problem
 
-```
+```java
 Order order = em.findAll();  // 1 query for order
 for(Order order: OrderList){
   order.getItems().size();
