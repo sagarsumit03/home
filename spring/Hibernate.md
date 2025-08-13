@@ -164,4 +164,4 @@ for(Order order: OrderList){
   order.getItems().size();
 }
 ```
-THIS becomes N+1 problem.
+## THIS BECOMES N+1 PROBLEM. TO AVOID THIS USE `@BatchSize(size = 10)`
