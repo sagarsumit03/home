@@ -93,6 +93,8 @@ If no object with the given identifier is found, `load()` throws an `ObjectNotFo
 
 ---
 ## How to check Fetch Lazy and Eager 
+### - LAZY: Insert Proxy placeholder
+### - EAGER: Load now (JOIN/extra query)
 Here a Student can have many courses and many courses can have many students.
 
 ```java
