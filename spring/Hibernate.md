@@ -84,3 +84,82 @@ b. `load():`
 only when a method (other than `getId()`) is called on the `proxy object`, requiring access to its properties.  
 If no object with the given identifier is found, `load()` throws an `ObjectNotFoundException`
 
+---
+| Annotation   | Default Fetch Type |                 Explaination             |
+| ------------ | ------------------ |------------------------------
+| `@OneToMany` | **LAZY**           |If it were **EAGER**, fetching one parent could trigger fetching hundreds or thousands of children even if you don’t need them. **LAZY** ensures the collection is fetched only when accessed. |
+| `@ManyToOne` | **EAGER**          |Fetching one extra row is cheap compared to fetching an entire collection. |
+
+
+---
+## How to check Fetch Lazy and Eager 
+Here a Student can have many courses and many courses can have many students.
+```
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY ,cascade = {CascadeType.MERGE})
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    @JsonManagedReference
+    private List<Course> courses = new ArrayList<>();
+}
+
+```
+
+```
+public class Course {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    /**
+     * What you’re seeing is the infinite nested JSON loop problem — a classic with
+     * @ManyToMany in JPA + Jackson.
+     * <p>
+     * It happens because:
+     * <p>
+     *   - Student has a List<Course> courses
+     *   - Course has a List<Student> students
+     *   - Jackson tries to serialize a Student, sees Course → inside Course it sees
+     *     students → inside students it sees courses → and so on... forever.
+     */
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "courses")
+    private List<Student> students = new ArrayList<>();
+}
+```
+
+to Test this: 
+If you see in the query you will only see Student query. but as soon as you do getCourses() you will get the secondary ones.
+```
+System.out.println("---- FETCH ORDER ----");
+Student student = studentRepo.findById(1L).orElse(new Student()); // SQL will fetch Order + Customer (EAGER)
+// // 1 query for student
+
+System.out.println("---- ACCESS ITEMS ----");
+int size =  student.getCourses().size(); // SQL for items will run **now** (LAZY) // 1 query for items
+```
+
+As we are fetching only 1 student and N courses its not N+1 but as soon as you fetch N student using above query and 
+then to loop on Students and fetch courses it becomes N+1 problem
+
+```
+Order order = em.findAll();  // 1 query for order
+for(Order order: OrderList){
+  order.getItems().size();
+}
+```
+THIS becomes N+1 problem.
