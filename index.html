@@ -2,147 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Knowledge Hub</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      margin: 0;
       background: #faf7f5;
-      color: #333;
+      margin: 0;
+      padding: 2rem;
     }
 
     h1 {
       text-align: center;
-      margin: 20px;
-      font-size: 2rem;
-      color: #444;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
 
     .card {
-      border-radius: 20px;
-      padding: 20px;
-      color: #fff;
-      cursor: pointer;
+      background: linear-gradient(135deg, #ffb347, #ffcc33);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      color: white;
+      font-weight: bold;
       position: relative;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
     }
-
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
     .card h2 {
-      margin: 0;
-      font-size: 1.5rem;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 0.5rem;
+      font-size: 1.3rem;
+      margin: 0;
     }
 
-    /* Subcards with animation */
-    .subcards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-
-      max-height: 0;
+    .sub-links {
+      margin-top: 1rem;
       overflow: hidden;
-      transition: max-height 0.5s ease, opacity 0.5s ease;
+      max-height: 0;
       opacity: 0;
-      margin-top: 0;
+      transform: translateY(-10px);
+      transition: all 0.4s ease;
     }
 
-    .subcards.show {
+    .card.open .sub-links {
       max-height: 500px;
       opacity: 1;
-      margin-top: 15px;
+      transform: translateY(0);
     }
 
-    .subcard {
-      background: rgba(255,255,255,0.15);
-      padding: 10px;
-      border-radius: 12px;
-      text-align: center;
-      backdrop-filter: blur(6px);
-      transition: background 0.3s;
-    }
-
-    .subcard:hover {
-      background: rgba(255,255,255,0.3);
-    }
-
-    .subcard a {
+    .sub-links a {
+      display: inline-block;
+      margin: 0.3rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 1rem;
+      color: white;
+      font-weight: normal;
       text-decoration: none;
-      color: #fff;
-      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .sub-links a:hover {
+      background: rgba(255,255,255,0.4);
     }
 
-    /* Gradient themes */
-    .design { background: linear-gradient(135deg, #f7971e, #ffd200); }
-    .java { background: linear-gradient(135deg, #ff7e5f, #feb47b); }
+    /* Different gradients per card */
+    .java { background: linear-gradient(135deg, #ff9966, #ff5e62); }
     .aws { background: linear-gradient(135deg, #667eea, #764ba2); }
-    .threads { background: linear-gradient(135deg, #43cea2, #185a9d); }
-    .docker { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
-    .spring { background: linear-gradient(135deg, #11998e, #38ef7d); }
-    .sql { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+    .spring { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+    .threads { background: linear-gradient(135deg, #00c6ff, #0072ff); }
   </style>
 </head>
 <body>
   <h1>📚 Knowledge Hub</h1>
+
   <div class="grid">
-
-    <div class="card design" onclick="toggleSub(this)">
-      <h2><i class="fas fa-project-diagram"></i> Design Patterns</h2>
-      <div class="subcards">
-        <div class="subcard"><a href="#">Factory</a></div>
-        <div class="subcard"><a href="#">Builder</a></div>
-        <div class="subcard"><a href="#">Singleton</a></div>
+    <!-- Design Patterns -->
+    <div class="card design" onclick="toggleCard(this)">
+      <h2><i class="fa-solid fa-diagram-project"></i> Design Patterns</h2>
+      <div class="sub-links">
+        <a href="#">Factory</a>
+        <a href="#">Builder</a>
+        <a href="#">Singleton</a>
+        <a href="#">Strategy</a>
+        <a href="#">Decorator</a>
       </div>
     </div>
 
-    <div class="card java" onclick="toggleSub(this)">
-      <h2><i class="fab fa-java"></i> Java</h2>
-      <div class="subcards">
-        <div class="subcard"><a href="#">Streams</a></div>
-        <div class="subcard"><a href="#">Basics</a></div>
+    <!-- Java -->
+    <div class="card java" onclick="toggleCard(this)">
+      <h2><i class="fa-brands fa-java"></i> Java</h2>
+      <div class="sub-links">
+        <a href="#">Basics</a>
+        <a href="#">Streams</a>
       </div>
     </div>
 
-    <div class="card aws" onclick="toggleSub(this)">
-      <h2><i class="fab fa-aws"></i> AWS</h2>
-      <div class="subcards">
-        <div class="subcard"><a href="#">Secrets</a></div>
-        <div class="subcard"><a href="#">Parameters</a></div>
+    <!-- AWS -->
+    <div class="card aws" onclick="toggleCard(this)">
+      <h2><i class="fa-brands fa-aws"></i> AWS</h2>
+      <div class="sub-links">
+        <a href="#">Parameters</a>
+        <a href="#">Secrets</a>
+        <a href="#">AWS Core</a>
       </div>
     </div>
-
   </div>
 
   <script>
-    function toggleSub(card) {
-      const all = document.querySelectorAll('.subcards');
-      const sub = card.querySelector('.subcards');
-      
-      // Close all others
-      all.forEach(s => {
-        if (s !== sub) s.classList.remove('show');
-      });
-
-      // Toggle current
-      sub.classList.toggle('show');
+    function toggleCard(card) {
+      card.classList.toggle("open");
     }
   </script>
 </body>
