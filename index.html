@@ -4,166 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Knowledge Hub</title>
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f9f7f6;
-      margin: 0;
-      padding: 2rem;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 2rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      transition: transform 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h2 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    .sub-links {
-      margin-top: 1rem;
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-    .card.open .sub-links {
-      max-height: 500px;
-      opacity: 1;
-    }
-
-    .sub-links a {
-      display: block;
-      margin: 0.4rem 0;
-      padding: 0.4rem 0.8rem;
-      background: rgba(255,255,255,0.15);
-      border-radius: 0.8rem;
-      text-decoration: none;
-      color: #fff;
-      transition: background 0.2s;
-    }
-    .sub-links a:hover {
-      background: rgba(255,255,255,0.35);
-    }
-
-    /* Gradients per category */
-    .design { background: linear-gradient(135deg, #ff6a00, #ee0979); }
-    .java { background: linear-gradient(135deg, #11998e, #38ef7d); }
-    .aws { background: linear-gradient(135deg, #6441a5, #2a0845); }
-    .threads { background: linear-gradient(135deg, #00c6ff, #0072ff); }
-    .docker { background: linear-gradient(135deg, #ff512f, #dd2476); }
-    .sql { background: linear-gradient(135deg, #8360c3, #2ebf91); }
-    .spring { background: linear-gradient(135deg, #56ab2f, #a8e063); }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>📚 Knowledge Hub</h1>
-
-  <div class="grid">
-    <!-- Design Patterns -->
-    <div class="card design" onclick="toggleCard(this)">
-      <h2>Design Patterns</h2>
-      <div class="sub-links">
-        <a href="design patterns/design_patterns.md">Design Patterns</a>
-        <a href="design patterns/FactoryPattern.md">Factory Pattern</a>
-        <a href="design patterns/Builder.md">Builder Pattern</a>
-        <a href="design patterns/SingletonPattern.md">Singleton Pattern</a>
-        <a href="design patterns/microservice_design_patterns.md">Microservices Design Pattern</a>
-        <a href="design patterns/Strategy Pattern.md">Strategy Pattern</a>
-        <a href="design patterns/DecoratorPattern.md">Decorator Pattern</a>
-        <a href="design patterns/memento.md">Memento Pattern</a>
-        <a href="design patterns/prototype.md">Prototype Pattern</a>
-      </div>
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-text">
+      <h1>🚀 Explore My Knowledge Hub</h1>
+      <p>Design Patterns • Java • AWS • Docker • SQL • Spring</p>
+      <a href="#content" class="btn">Start Learning</a>
     </div>
+  </header>
+
+  <main id="content">
+    <!-- Design Patterns -->
+    <section>
+      <h2>Design Patterns</h2>
+      <div class="card-grid">
+        <a href="design patterns/design_patterns.md" class="card">Design Patterns</a>
+        <a href="design patterns/FactoryPattern.md" class="card">Factory Pattern</a>
+        <a href="design patterns/Builder.md" class="card">Builder Pattern</a>
+        <a href="design patterns/SingletonPattern.md" class="card">Singleton Pattern</a>
+        <a href="design patterns/microservice_design_patterns.md" class="card">Microservices</a>
+        <a href="design patterns/Strategy Pattern.md" class="card">Strategy Pattern</a>
+        <a href="design patterns/DecoratorPattern.md" class="card">Decorator Pattern</a>
+        <a href="design patterns/memento.md" class="card">Memento Pattern</a>
+        <a href="design patterns/prototype.md" class="card">Prototype Pattern</a>
+      </div>
+    </section>
 
     <!-- Java -->
-    <div class="card java" onclick="toggleCard(this)">
+    <section>
       <h2>Java</h2>
-      <div class="sub-links">
-        <a href="java/Java.md">Basic Java</a>
-        <a href="java/stream.md">Streams</a>
-        <a href="temp.md">MISC</a>
+      <div class="card-grid">
+        <a href="java/Java.md" class="card">Basic Java</a>
+        <a href="java/stream.md" class="card">Streams</a>
+        <a href="temp.md" class="card">MISC</a>
       </div>
-    </div>
+    </section>
 
     <!-- AWS -->
-    <div class="card aws" onclick="toggleCard(this)">
+    <section>
       <h2>AWS</h2>
-      <div class="sub-links">
-        <a href="AWS/lambda-access-parameter.md">Accessing Parameters</a>
-        <a href="AWS/AWlambda-access-secret.md">Accessing Secrets</a>
-        <a href="AWS/aws.md">AWS Overview</a>
+      <div class="card-grid">
+        <a href="AWS/lambda-access-parameter.md" class="card">Accessing Parameters</a>
+        <a href="AWS/AWlambda-access-secret.md" class="card">Accessing Secrets</a>
+        <a href="AWS/aws.md" class="card">AWS Overview</a>
       </div>
-    </div>
+    </section>
 
     <!-- Threads -->
-    <div class="card threads" onclick="toggleCard(this)">
+    <section>
       <h2>Threads</h2>
-      <div class="sub-links">
-        <a href="threads/threads.md">Threads</a>
-        <a href="threads/blockingqueue.md">Blocking Queue</a>
-        <a href="threads/reentrantlock.md">Reentrant Lock</a>
-        <a href="threads/semaphore.md">Semaphores</a>
-        <a href="threads/volatilevsatomic.md">Volatile vs Atomic</a>
+      <div class="card-grid">
+        <a href="threads/threads.md" class="card">Threads</a>
+        <a href="threads/blockingqueue.md" class="card">Blocking Queue</a>
+        <a href="threads/reentrantlock.md" class="card">Reentrant Lock</a>
+        <a href="threads/semaphore.md" class="card">Semaphores</a>
+        <a href="threads/volatilevsatomic.md" class="card">Volatile vs Atomic</a>
       </div>
-    </div>
+    </section>
 
     <!-- Docker & Kubernetes -->
-    <div class="card docker" onclick="toggleCard(this)">
+    <section>
       <h2>Docker & Kubernetes</h2>
-      <div class="sub-links">
-        <a href="docker/docker.md">Docker</a>
-        <a href="kubernates/kubernates.md">Kubernetes</a>
-        <a href="kubernates/Probes.md">Probes</a>
-        <a href="kubernates/Ngnix.md">Ngnix</a>
+      <div class="card-grid">
+        <a href="docker/docker.md" class="card">Docker</a>
+        <a href="kubernates/kubernates.md" class="card">Kubernetes</a>
+        <a href="kubernates/Probes.md" class="card">Probes</a>
+        <a href="kubernates/Ngnix.md" class="card">Nginx</a>
       </div>
-    </div>
+    </section>
 
     <!-- SQL -->
-    <div class="card sql" onclick="toggleCard(this)">
+    <section>
       <h2>SQL</h2>
-      <div class="sub-links">
-        <a href="SQL.md">SQL</a>
+      <div class="card-grid">
+        <a href="SQL.md" class="card">SQL</a>
       </div>
-    </div>
+    </section>
 
     <!-- Spring -->
-    <div class="card spring" onclick="toggleCard(this)">
+    <section>
       <h2>Spring</h2>
-      <div class="sub-links">
-        <a href="spring/spring.md">Spring</a>
-        <a href="spring/Hibernate.md">Hibernate</a>
-        <a href="spring/controller.md">Controller</a>
-        <a href="spring/Events_using_RabbitMQ.md">Event Driven (RabbitMQ)</a>
+      <div class="card-grid">
+        <a href="spring/spring.md" class="card">Spring</a>
+        <a href="spring/Hibernate.md" class="card">Hibernate</a>
+        <a href="spring/controller.md" class="card">Controller</a>
+        <a href="spring/Events_using_RabbitMQ.md" class="card">Event Driven (RabbitMQ)</a>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <script>
-    function toggleCard(card) {
-      card.classList.toggle("open");
-    }
-  </script>
+  <!-- Footer -->
+  <footer>
+    <p>🌐 Made with ❤️ by Sumit Sagar</p>
+  </footer>
 </body>
 </html>
