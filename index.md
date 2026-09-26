@@ -56,4 +56,4 @@
 
 ## Good to Know Stuff
 
-- [**Bloom Filter**](good to know/BloomFilter.md)
+- [**Bloom Filter**](good to Know/BloomFilter.md)
