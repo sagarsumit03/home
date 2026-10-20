@@ -6,8 +6,8 @@
 - [**Microservices Design Pattern**](design patterns/microservice_design_patterns.md)
 - [**Strategy Pattern**](design patterns/Strategy Pattern.md)
 - [**Decorator Pattern**](design patterns/DecoratorPattern.md)
-- [**Memento Pattern**](design patterns/memento.md)
 - [**Prototype Pattern**](design patterns/prototype.md)
+- [**ObserverPattern**] (design patterns/Observer.md)
 
 ---
 
