@@ -1,9 +1,44 @@
 # Decorator Pattern
 
-Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
+Attach additional responsibilities to an object dynamically at runtime.
 
-This pattern says that the class must be closed for modification but open for extension, a new functionality can be added without disturbing existing functionalities. The concept is very useful when we want to add special functionalities to a specific object instead of the whole class. In this pattern, we use the concept of object composition instead of inheritance.
+# Strategy vs Decorator Pattern:
 
+The main difference between strategy and decorator is :
+1. if we are writing a sorting function. based on different parameters we can choose the sorting strategy. Thats `Strategy Pattern` 
+
+    ```java
+    java.util.Comparator#compare() uses differnt strategy to sort the collection, 
+
+    // The sorting method is the Context. The Comparator is the Strategy.
+    List<String> names = Arrays.asList("John", "Anna", "Mike");
+
+    // Strategy 1: Sort alphabetically
+    names.sort((a, b) -> a.compareTo(b)); 
+
+    // Strategy 2: Sort by length
+    names.sort((a, b) -> Integer.compare(a.length(), b.length())); 
+
+
+    ```
+2. If on a collection, you are making them immutable or create wrapper around different streams then its decorator.
+
+    ```java
+    // FileInputStream is the core component providing raw text reading
+    FileInputStream fis = new FileInputStream("file.txt"); 
+
+    // BufferedInputStream decorates it to add memory buffering performance
+    BufferedInputStream bis = new BufferedInputStream(fis); 
+
+    // DataInputStream decorates it further to allow reading primitive Java data types
+    DataInputStream dis = new DataInputStream(bis);
+
+
+
+    OR,
+
+    Collections.unmodifiableList or Collections.synchronizedList etc. They are wrapper on top of the core list.
+    ```
 
 
 ```java
