@@ -7,7 +7,7 @@
 - [**Strategy Pattern**](design patterns/Strategy Pattern.md)
 - [**Decorator Pattern**](design patterns/DecoratorPattern.md)
 - [**Prototype Pattern**](design patterns/prototype.md)
-- [**ObserverPattern**] (design patterns/Observer.md)
+- [**ObserverPattern**](design patterns/Observer.md)
 
 ---
 
